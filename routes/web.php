@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,10 +28,13 @@ Route::get('/ckeditor', function () {
 });
 
     
-Route::name('teacher.')->prefix('teacher')->group(function() {
-    Route::name('question.')->prefix('question')->group(function () {
-        Route::get('/', 'QuestionController@index')->name('list');
-        Route::get('/create', 'QuestionController@create')->name('create');
-        Route::post('/store', 'QuestionController@store')->name('store');
-    });
-});
+Route::name('teacher.')
+    ->prefix('teacher')
+        ->middleware('auth', 'authorize:admin,teacher')
+            ->group(function() {
+                Route::name('question.')->prefix('question')->group(function () {
+                    Route::get('/', 'QuestionController@index')->name('list');
+                    Route::get('/create', 'QuestionController@create')->name('create');
+                    Route::post('/store', 'QuestionController@store')->name('store');
+                });
+            });

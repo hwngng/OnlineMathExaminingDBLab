@@ -7,11 +7,6 @@ use App\Http\Requests\QuestionRequest;
 
 class QuestionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     private $questionBus;
     private function getQuestionBus ()
     {

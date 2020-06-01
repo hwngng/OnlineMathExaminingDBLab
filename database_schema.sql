@@ -47,6 +47,7 @@ create table `user` (
     `parent_phone` varchar(20),
     `description` text,
     `email_verified_at` datetime,
+    `role_ids` varchar(20),
     `updated_at` datetime,
     `created_at` datetime,
     `deleted_at` datetime,
@@ -54,16 +55,16 @@ create table `user` (
     constraint `pk_user_id` primary key (`id`)
 );
 
-drop table if exists `user_role`;
-create table `user_role` (
-	`user_id` int not null,
-    `role_id` int not null,
-    `created_at` datetime,
-    `updated_at` datetime,
-    `created_by` int,
-    `updated_by` int,
-	constraint `pk_user_role_user_id_role_id` primary key (`user_id`, `role_id`)
-);
+-- drop table if exists `user_role`;
+-- create table `user_role` (
+-- 	`user_id` int not null,
+--     `role_id` int not null,
+--     `created_at` datetime,
+--     `updated_at` datetime,
+--     `created_by` int,
+--     `updated_by` int,
+-- 	constraint `pk_user_role_user_id_role_id` primary key (`user_id`, `role_id`)
+-- );
 
 drop table if exists `question`;
 create table `question` (
@@ -152,29 +153,29 @@ foreign key (`deleted_by`) references `user` (`id`)
 on update cascade
 on delete restrict;
 
-alter table `user_role`
-add constraint `fk_user_role_user`
-foreign key (`user_id`) references `user` (`id`)
-on update cascade
-on delete restrict;
+-- alter table `user_role`
+-- add constraint `fk_user_role_user`
+-- foreign key (`user_id`) references `user` (`id`)
+-- on update cascade
+-- on delete restrict;
 
-alter table `user_role`
-add constraint `fk_user_role_role`
-foreign key (`role_id`) references `role` (`id`)
-on update cascade
-on delete restrict;
+-- alter table `user_role`
+-- add constraint `fk_user_role_role`
+-- foreign key (`role_id`) references `role` (`id`)
+-- on update cascade
+-- on delete restrict;
 
-alter table `user_role`
-add constraint `fk_user_role_user_created`
-foreign key (`created_by`) references `user` (`id`)
-on update cascade
-on delete restrict;
+-- alter table `user_role`
+-- add constraint `fk_user_role_user_created`
+-- foreign key (`created_by`) references `user` (`id`)
+-- on update cascade
+-- on delete restrict;
 
-alter table `user_role`
-add constraint `fk_user_role_user_updated`
-foreign key (`updated_by`) references `user` (`id`)
-on update cascade
-on delete restrict;
+-- alter table `user_role`
+-- add constraint `fk_user_role_user_updated`
+-- foreign key (`updated_by`) references `user` (`id`)
+-- on update cascade
+-- on delete restrict;
 
 alter table `question`
 add constraint `fk_question_grade`
@@ -248,3 +249,7 @@ foreign key (`question_id`) references `question` (`id`)
 on update cascade
 on delete restrict;
 
+insert into `role`
+values (1, 'admin', null),
+		(2, 'teacher', null),
+        (3, 'student', null);

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Role;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -24,10 +25,10 @@ class User extends Authenticatable
     /**
      * The roles that belong to the user.
      */
-    public function roles ()
-    {
-        return $this->belongsToMany('App\Models\Role', 'user_role', 'user_id', 'role_id')->withTimestamps();
-    }
+    // public function roles ()
+    // {
+    //     return $this->belongsToMany('App\Models\Role', 'user_role', 'user_id', 'role_id')->withTimestamps();
+    // }
 
     public function deletedBy ()
     {
@@ -54,4 +55,24 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Test', 'created_by', 'id');
     }
 
+    public function hasARoleIn ($roles)
+    {
+        $currentRoles = explode('|', $this->role_ids);
+        foreach($roles as $role) {
+            if (in_array(Role::$ROLE[$role], $currentRoles)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasRole ($role)
+    {
+        $currentRoles = explode('|', $this->role_ids);
+        if (in_array(Role::$ROLE[$role], $currentRoles))
+        {
+            return true;
+        }
+        return false;
+    }
 }
