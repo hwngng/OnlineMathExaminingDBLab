@@ -19,5 +19,8 @@ class UserBus extends BaseBus
 
 
 
-
+	public function getAllForAdmin ()
+	{
+		return $this->userDAL->getAllForAdmin();
+	}
 }

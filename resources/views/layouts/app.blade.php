@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
 
     <link href="{{ asset("css/app.css") }}" rel="stylesheet">
     @yield('header')
@@ -34,6 +34,7 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
+                    @yield('navbar')
                     @guest
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Đăng nhập</a>
@@ -44,6 +45,17 @@
                     </li>
                     @endif
                     @else
+                    @can('be-admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.index') }}">Trang Quản Trị Viên</a>
+                        </li>
+                    @endcan
+                    @can('be-teacher')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('teacher.index') }}">Trang Giáo Viên</a>
+                        </li>
+                    @endcan
+
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
