@@ -1,6 +1,7 @@
 <?php
+namespace App\Common;
 
-class ReturnMsg
+class ApiResult
 {
 	private $retCode;
 	private $retMsg;

@@ -7,7 +7,7 @@ create table `school` (
 	`id` int not null auto_increment,
     `name` varchar(50) not null,
     `description` text,
-    `address` varchar(20),
+    `address` varchar(200),
     constraint `pk_school_id` primary key (`id`)
 );
 
@@ -249,7 +249,21 @@ foreign key (`question_id`) references `question` (`id`)
 on update cascade
 on delete restrict;
 
+delete from `role`;
 insert into `role`
 values (1, 'admin', null),
 		(2, 'teacher', null),
         (3, 'student', null);
+        
+delete from `grade`;
+insert into `grade` values (10, 'Lớp 10'), (11, 'Lớp 11'), (12, 'Lớp 12');
+
+delete from `school`;
+insert into `school`
+values
+(1, 'THCS Lê Thanh Nghị', '', 'Gia Tân, Gia Lộc, Hải Dương'),
+(2, 'THPT Gia Lộc', '', 'TT Gia Lộc, Gia Lộc, Hải Dương'),
+(3, 'THPT Chuyên Nguyễn Trãi', '', 'Đường Ngô Quyền, TP Hải Dương, Hải Dương'),
+(4, 'THPT Hồng Quang', '', 'Chương Dương, Trần Phú, TP Hải Dương, Hải Dương'),
+(5, 'THPT chuyên Khoa học Tự nhiên', '', '182 đường Lương Thế Vinh, quận Thanh Xuân, Hà Nội'),
+(6, 'THPT Thăng Long', '', 'Số 44, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội');

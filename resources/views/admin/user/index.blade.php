@@ -1,4 +1,4 @@
-@extends('app.layouts')
+@extends('layouts.app')
 
 @section('header')
 	<link rel="stylesheet" href="{{ asset('css/editable-table.css') }}">

@@ -1,7 +1,7 @@
 <?php
 namespace App\DAL;
 
-use ReturnMsg;
+use App\Common\ApiResult;
 use App\DAL\BaseDAL;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ class QuestionDAL extends BaseDAL
 
 	public function insert ($question)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 
 		$questionORM = new Question();
 		$questionORM->content = htmlspecialchars($question->content);
@@ -35,7 +35,7 @@ class QuestionDAL extends BaseDAL
 
 	public function update ($question)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 		try
 		{
 			if (isset($question->id))
@@ -77,7 +77,7 @@ class QuestionDAL extends BaseDAL
 
 	public function delete ($id)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 		try
 		{
 			$question = Question::find($id);
@@ -104,7 +104,7 @@ class QuestionDAL extends BaseDAL
 
 	public function restore ($id)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 		try
 		{
 			$question = Question::onlyTrashed()->find($id);
