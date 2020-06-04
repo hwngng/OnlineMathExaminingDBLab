@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="">
-	@include('question.form')
+<div class="container">
+    <div class="align-content-center">
+        @include('question.form')
+    </div>
 </div>
 @endsection

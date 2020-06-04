@@ -19,5 +19,17 @@ class ChoiceBus extends BaseBus
 
 
 
-	
+	public function insertForQuestion ($questionId, $choicesForm)
+	{
+		$len = 0;
+		$choices = (object) [];
+		foreach ($choicesForm as $choice)
+		{
+			$choices->question_id = $questionId;
+			$choices->id = $len;
+			$choices->content = $choice['content'];
+			++$len;
+		}
+		$this->getChoiceDAL()->insertForQuestion($questionId, $choices);
+	}
 }

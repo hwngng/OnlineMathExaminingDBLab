@@ -34,7 +34,6 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
-                    @yield('navbar')
                     @guest
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Đăng nhập</a>
@@ -46,14 +45,20 @@
                     @endif
                     @else
                     @can('be-admin')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.index') }}">Trang Quản Trị Viên</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('admin.index') }} --}}">Quản Trị Viên</a>
                         </li>
+                        @yield('dropdown-admin')
                     @endcan
                     @can('be-teacher')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('teacher.index') }}">Trang Giáo Viên</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('teacher.index') }} --}}" data-toggle="dropdown">Giáo Viên</a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Quản Lý Đề Thi</a>
+                                <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Quản Lý Câu Hỏi</a>
+                            </div>
                         </li>
+                        @yield('dropdown-teacher')
                     @endcan
 
                     <li class="nav-item dropdown">

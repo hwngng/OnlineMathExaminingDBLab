@@ -4,7 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./jquery');
+import $ from './jquery';
+window.$ = window.jQuery = $;
 require('./popper.min') 
 require('./bootstrap');
 
