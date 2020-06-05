@@ -33,7 +33,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('question.')->prefix('question')->group(function () {
                 Route::name('list')->get('/', 'QuestionController@index');
                 Route::name('create')->get('/create', 'QuestionController@create')->middleware('authorize:teacher');
-                Route::name('store')->post('/store', 'QuestionController@store')->middleware('authorize:teacher');
+                Route::name('store')->post('/', 'QuestionController@store')->middleware('authorize:teacher');
+                Route::name('destroy')->get('/destroy/{id}', 'QuestionController@destroy');
             });
         });
 
