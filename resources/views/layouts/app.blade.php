@@ -49,7 +49,7 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->first_name }} <span class="caret"></span>
                         </a>
-                        
+
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('register') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -71,6 +71,6 @@
         @yield('content')
     </main>
 </body>
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('/js/app.js') }}"></script>
 @yield('end')
 </html>
