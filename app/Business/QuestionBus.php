@@ -28,7 +28,11 @@ class QuestionBus extends BaseBus
 	
 	public function insert($question)
 	{
-		return $this->getQuestionDAL()->insert($question);
+		$apiResult = $this->getQuestionDAL()->insert($question);
+		$choiceBus = new ChoiceBus();
+		$apiResult->insertChoice = $choiceBus->insertForQuestion($apiResult->questionId, $question->choices);
+
+		return $apiResult;
 	}
 
 	public function update ($question)
@@ -36,4 +40,8 @@ class QuestionBus extends BaseBus
 		return $this->getQuestionDAL()->update($question);
 	}
 
+	public function destroy ($questionId)
+	{
+		return $this->getQuestionDAL()->destroy($questionId);
+	}
 } 

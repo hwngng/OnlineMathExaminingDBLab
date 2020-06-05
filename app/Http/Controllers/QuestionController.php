@@ -34,8 +34,13 @@ class QuestionController extends Controller
 
     public function store (QuestionRequest $questionRequest)
     {
-        $result = $this->getQuestionBus()->insert($questionRequest);
+        $apiResult = $this->getQuestionBus()->insert($questionRequest);
+        return redirect(route('teacher.question.create'));
+    }
 
+    public function destroy ($questionId)
+    {
+        $apiResult = $this->getQuestionBus()->destroy($questionId);
         return redirect(route('teacher.question.list'));
     }
 }

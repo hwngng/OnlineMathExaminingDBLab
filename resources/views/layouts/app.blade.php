@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
 
     <link href="{{ asset("css/app.css") }}" rel="stylesheet">
     @yield('header')
@@ -44,6 +44,23 @@
                     </li>
                     @endif
                     @else
+                    @can('be-admin')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('admin.index') }} --}}">Quản Trị Viên</a>
+                        </li>
+                        @yield('dropdown-admin')
+                    @endcan
+                    @can('be-teacher')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('teacher.index') }} --}}" data-toggle="dropdown">Giáo Viên</a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Quản Lý Đề Thi</a>
+                                <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Quản Lý Câu Hỏi</a>
+                            </div>
+                        </li>
+                        @yield('dropdown-teacher')
+                    @endcan
+
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

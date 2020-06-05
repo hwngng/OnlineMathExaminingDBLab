@@ -1,7 +1,7 @@
 <?php
 namespace App\DAL;
 
-use ReturnMsg;
+use App\Common\ApiResult;
 use App\DAL\BaseDAL;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
@@ -11,23 +11,37 @@ class QuestionDAL extends BaseDAL
 
 	public function getAll ()
 	{
-		$questions = Question::select('content')->get();
+		$questions = Question::select('id',
+									'content')->get();
 		return $questions;
 	}
 
 	public function insert ($question)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 
+		$len = 0;
+		$solution_choice_ids = '';
+		foreach ($question->choices as $choice)
+		{
+			if (isset($choice['sol']))
+			{
+				$solution_choice_ids .= $len;
+			}
+			++$len;
+		}
 		$questionORM = new Question();
 		$questionORM->content = htmlspecialchars($question->content);
-		$questionORM->solution_choice_ids = $question->solution_choice_ids;
+		$questionORM->solution_choice_ids = $solution_choice_ids;
 		$questionORM->solution = $question->solution;
 
 		$result = $questionORM->save();
 
 		if ($result)
+		{
 			$ret->fill('0', 'Success');
+			$ret->questionId = $questionORM->id;
+		}
 		else
 			$ret->fill('1', 'Database error.');
 		return $ret;
@@ -35,7 +49,7 @@ class QuestionDAL extends BaseDAL
 
 	public function update ($question)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 		try
 		{
 			if (isset($question->id))
@@ -75,9 +89,9 @@ class QuestionDAL extends BaseDAL
 		return $ret;
 	}
 
-	public function delete ($id)
+	public function destroy ($id)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 		try
 		{
 			$question = Question::find($id);
@@ -104,7 +118,7 @@ class QuestionDAL extends BaseDAL
 
 	public function restore ($id)
 	{
-		$ret = new ReturnMsg();
+		$ret = new ApiResult();
 		try
 		{
 			$question = Question::onlyTrashed()->find($id);

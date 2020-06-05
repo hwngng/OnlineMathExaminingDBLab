@@ -7,14 +7,14 @@ create table `school` (
 	`id` int not null auto_increment,
     `name` varchar(50) not null,
     `description` text,
-    `address` varchar(20),
+    `address` varchar(200),
     constraint `pk_school_id` primary key (`id`)
 );
 
--- !! grade id is varchar(4)
+-- !! grade id is char(4)
 drop table if exists `grade`;
 create table `grade` (
-	`id` varchar(4) not null,
+	`id` char(4) not null,
     `description` text,
     constraint `pk_grade_id` primary key (`id`)
 );
@@ -41,7 +41,7 @@ create table `user` (
     `mobile_phone` varchar(20),
     `telephone` varchar(20),
     `school_id` int,
-    `grade_id` varchar(4),
+    `grade_id` char(4),
     `address` varchar(200),
 	`parent_name` varchar(100),
     `parent_phone` varchar(20),
@@ -70,7 +70,7 @@ drop table if exists `question`;
 create table `question` (
 	`id` int not null auto_increment,
     `content` varchar(6000),
-    `grade_id` varchar(4),
+    `grade_id` char(4),
     `solution_choice_ids` varchar(50),
     `solution` text,
     `deleted_at` datetime,
@@ -91,7 +91,7 @@ create table `test` (
 	`id` int not null auto_increment,
     `code` int not null default 0,
     `name` varchar(200) not null,
-    `grade_id` varchar(4),
+    `grade_id` char(4),
     `description` text,
     `no_of_questions` smallint,
     `created_at` datetime,
@@ -249,7 +249,21 @@ foreign key (`question_id`) references `question` (`id`)
 on update cascade
 on delete restrict;
 
+delete from `role`;
 insert into `role`
 values (1, 'admin', null),
 		(2, 'teacher', null),
         (3, 'student', null);
+        
+delete from `grade`;
+insert into `grade` values (10, 'Lớp 10'), (11, 'Lớp 11'), (12, 'Lớp 12');
+
+delete from `school`;
+insert into `school`
+values
+(1, 'THCS Lê Thanh Nghị', '', 'Gia Tân, Gia Lộc, Hải Dương'),
+(2, 'THPT Gia Lộc', '', 'TT Gia Lộc, Gia Lộc, Hải Dương'),
+(3, 'THPT Chuyên Nguyễn Trãi', '', 'Đường Ngô Quyền, TP Hải Dương, Hải Dương'),
+(4, 'THPT Hồng Quang', '', 'Chương Dương, Trần Phú, TP Hải Dương, Hải Dương'),
+(5, 'THPT chuyên Khoa học Tự nhiên', '', '182 đường Lương Thế Vinh, quận Thanh Xuân, Hà Nội'),
+(6, 'THPT Thăng Long', '', 'Số 44, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội');

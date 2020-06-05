@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -41,5 +44,20 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    public function redirectTo ()
+    {
+        $redirectTo = '/';
+        if (isset(Auth::user()->role_ids))
+        {
+            if (Gate::allows('be-teacher')) {
+                $redirectTo = route('teacher.index');
+            }
+            if (Gate::allows('be-admin')) {
+                $redirectTo = route('admin.index');
+            }
+        }
+        return $redirectTo;
     }
 }

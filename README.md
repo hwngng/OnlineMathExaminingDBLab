@@ -1,5 +1,5 @@
 # Prerequisites
-1. Laravel 7.x.
+1. Laravel 7.x and PHP 7.2.5.
 2. MySQL/MongoDB.
 3. Database user with all granted priviliges on database named `math_exam_dblab`.
 
@@ -8,6 +8,7 @@ Run following commands:
 ```
 git clone https://github.com/PdaOgu/OnlineMathExaminingDBLab.git
 cd OnlineMathExamining
+composer install
 cp .env.example .env
 php artisan key:generate
 nano .env

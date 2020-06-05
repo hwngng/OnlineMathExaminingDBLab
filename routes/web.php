@@ -14,27 +14,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['confirm' => false,
             'reset' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/ckeditor', function () {
     return view('ckeditor');
 });
 
-    
-Route::name('teacher.')
-    ->prefix('teacher')
-        ->middleware('auth', 'authorize:admin,teacher')
-            ->group(function() {
-                Route::name('question.')->prefix('question')->group(function () {
-                    Route::get('/', 'QuestionController@index')->name('list');
-                    Route::get('/create', 'QuestionController@create')->name('create');
-                    Route::post('/store', 'QuestionController@store')->name('store');
-                });
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::name('teacher.')
+        ->prefix('teacher')
+        ->middleware('authorize:admin,teacher')
+        ->group(function () {
+            Route::name('index')->get('/', 'TeacherController@index');
+            Route::name('question.')->prefix('question')->group(function () {
+                Route::name('list')->get('/', 'QuestionController@index');
+                Route::name('create')->get('/create', 'QuestionController@create')->middleware('authorize:teacher');
+                Route::name('store')->post('/', 'QuestionController@store')->middleware('authorize:teacher');
+                Route::name('destroy')->get('/destroy/{id}', 'QuestionController@destroy');
             });
+        });
+
+    Route::name('admin.')
+        ->prefix('admin')
+        ->middleware('authorize:admin')
+        ->group(function () {
+            Route::name('index')->get('/', 'AdminController@index');
+            Route::name('user.')->prefix('user')->group(function () {
+                Route::name('list')->get('/', 'UserController@index');
+            });
+        });
+});    
