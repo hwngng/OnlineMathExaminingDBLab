@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', '- Quản lý câu hỏi')
+    
 @section('header')
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
