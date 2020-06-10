@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', '- Quản lý câu hỏi')
+    
 @section('header')
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -7,9 +9,9 @@
 		tex2jax: {inlineMath: [["$","$"], ["\\(","\\)"]]},
 	});
 </script>
-{{-- <script type="text/javascript" async src="{{ asset('js/mathjax/tex-chtml.js') }}"></script> --}}
-<script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script>
+<script type="text/javascript" src="{{ asset('js/mathjax/tex-chtml.js') }}"></script>
+{{-- <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
 
 <style>
     strong {
