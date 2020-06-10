@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', '- Tạo câu hỏi')
-    
 @section('content')
 <div class="container">
     <div class="align-content-center">
