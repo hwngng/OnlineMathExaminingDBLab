@@ -13673,19 +13673,21 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jquery */ "./resources/js/jquery.js");
-/* harmony import */ var _jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _jquery_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jquery.js */ "./resources/js/jquery.js");
+/* harmony import */ var _jquery_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_jquery_js__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-window.$ = window.jQuery = _jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.$ = window.jQuery = _jquery_js__WEBPACK_IMPORTED_MODULE_0___default.a;
 
-__webpack_require__(/*! ./popper.min */ "./resources/js/popper.min.js");
+__webpack_require__(/*! ./jquery.js */ "./resources/js/jquery.js");
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // window.Vue = require('vue');
+__webpack_require__(/*! ./popper.min.js */ "./resources/js/popper.min.js");
+
+__webpack_require__(/*! ./bootstrap.js */ "./resources/js/bootstrap.js"); // window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
