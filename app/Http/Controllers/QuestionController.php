@@ -24,7 +24,7 @@ class QuestionController extends Controller
         $viewData = [
             'questions' => $apiResult->questions
         ];
-        
+
         return view('question.index', $viewData);
     }
 
@@ -36,7 +36,7 @@ class QuestionController extends Controller
     public function store (QuestionRequest $questionRequest)
     {
         $apiResult = $this->getQuestionBus()->insert($questionRequest);
-        return redirect(route('teacher.question.create'));
+        return response()->json($apiResult->report());
     }
 
     public function edit ($questionId)
@@ -45,7 +45,7 @@ class QuestionController extends Controller
         $viewData = [
             'question' => $apiResult->question
         ];
-        
+
         return view('question.edit', $viewData);
     }
 
@@ -59,7 +59,7 @@ class QuestionController extends Controller
     public function destroy ($questionId)
     {
         $apiResult = $this->getQuestionBus()->destroy($questionId);
-        
-        return $apiResult;
+
+        return response()->json($apiResult->report());
     }
 }

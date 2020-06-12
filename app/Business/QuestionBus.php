@@ -26,7 +26,7 @@ class QuestionBus extends BaseBus
 	{
 		return $this->getQuestionDAL()->getAll();
 	}
-	
+
 	public function getById ($id)
 	{
 		$apiResult = $this->getQuestionDAL()->getById($id);
@@ -36,7 +36,7 @@ class QuestionBus extends BaseBus
 
 	public function insert($question)
 	{
-		$question->content = htmlspecialchars($question['content']);
+		$question['content'] = htmlspecialchars($question['content']);
 		$apiResult = $this->getQuestionDAL()->insert($question);
 		$choiceBus = new ChoiceBus();
 		$apiResult->insertChoice = $choiceBus->insertForQuestion($apiResult->questionId, $question['choices']);
@@ -50,7 +50,7 @@ class QuestionBus extends BaseBus
 		$apiResult = $this->getQuestionDAL()->update($question);
 		$choiceBus = new ChoiceBus();
 		$apiResult->updateChoice = $choiceBus->updateForQuestion($question['id'], $question['choices']);
-		
+
 		return $apiResult;
 	}
 
@@ -58,4 +58,4 @@ class QuestionBus extends BaseBus
 	{
 		return $this->getQuestionDAL()->destroy($questionId);
 	}
-} 
+}

@@ -5,12 +5,11 @@
 }
 </style>
 
-<form method="POST" action="{{ $action == 'create' ? route('teacher.question.store') : route('teacher.question.update') }}" id="form">
+<form method="POST" action="{{ $action == 'create' ? route('teacher.question.store', [], false) : route('teacher.question.update', [], false) }}" id="form">
     @csrf
     <div class="form-group">
-
-		<label for="content">Nội dung câu hỏi:</label>
 		<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
+		<label for="content">Nội dung câu hỏi:</label>
         <textarea class="form-control" name="content" id="content">{{ isset($question->content) ? htmlspecialchars_decode($question->content) : '' }}</textarea>
         <button type="button" class="add-choice btn btn-primary">Thêm lựa chọn <i class="fa fa-plus"></i></button>
 
@@ -60,7 +59,7 @@
 	});
 
 	var curChoice = 65;
-	var noOfChoice = {{ $noOfChoices }};
+	var noOfChoice = {{ $noOfChoices }}
 	for (let i = 0; i < noOfChoice; ++i) {
 		CKEDITOR.replace(String.fromCharCode(curChoice + i), {
 			customConfig: '/js/ckeditor/config_basic.js',
@@ -95,13 +94,29 @@
 
 			let form_url = $(this).attr("action");
 			let form_method = $(this).attr("method");
+
+			for (var i in CKEDITOR.instances) {
+				CKEDITOR.instances[i].updateElement();
+			};
 			var form_data = $(this).serialize();
 			$.ajax({
 				type: form_method,
 				url: form_url,
 				data: form_data,
 				success: function (response) {
-
+					if (response['return_code'] == '0') {
+						@if ($action == 'create')
+						if (!confirm("Thêm câu hỏi thành công!\nBạn có muốn tiếp tục tạo câu hỏi?")) {
+							close();
+						} else {
+							window.location.reload();
+						}
+						@else
+							window.location.pathname = "{{ route('teacher.question.list', [], false) }}";
+						@endif
+					} else {
+						alert("Thêm câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.")
+					}
 				}
 			});
 		})

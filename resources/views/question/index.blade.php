@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', '- Quản lý câu hỏi')
-    
+
 @section('header')
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -24,8 +24,8 @@
 <div class="container">
     <div class="align-content-center">
         <div style="margin-bottom: 10px">
-            <a class="btn btn-success float-right" href="{{  route('teacher.question.create') }}" target="_blank">Thêm câu hỏi <i
-                    class="fas fa-plus"></i></a>
+            <a class="btn btn-success float-right" href="{{  route('teacher.question.create') }}" target="_blank">Thêm
+                câu hỏi <i class="fas fa-plus"></i></a>
         </div>
 
         <table class="table">
@@ -43,11 +43,13 @@
                 @isset($questions)
                 @foreach ($questions as $question)
                 <tr id="{{ $question->id }}">
-                    <td class="order" >{{ $i++ }}</td>
+                    <td class="order">{{ $i++ }}</td>
                     <td>{!! htmlspecialchars_decode($question->content) !!}</td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="{{ route('teacher.question.edit', $question->id) }}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="deleteQuestion(event, {{ $question->id }}, {{ $i-1 }})"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('teacher.question.edit', $question->id) }}"><i
+                                class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm" href="javascript:void(0)"
+                            onclick="deleteQuestion(event, {{ $question->id }})"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 @endforeach
@@ -59,25 +61,29 @@
 @endsection
 
 @section('end')
-    <script>
-        function deleteQuestion (e, questionId, order) {
-            e.preventDefault();
-            $.ajax({
-                type: "get",
-                url: "{{ route('teacher.question.destroy', '') }}" + '/' + questionId,
-                success: function (response) {
-                    let no = order;
+<script>
+    function deleteQuestion(e, questionId) {
+        e.preventDefault();
+        $.ajax({
+            type: "get",
+            url: "{{ route('teacher.question.destroy', '') }}" + '/' + questionId,
+            success: function (response) {
+                if (response['return_code'] == 0) {
                     $('#' + questionId).animate("fast").animate({
-                        opacity : "hide"
+                        opacity: "hide"
                     }, "slow", function () {
                         let nextRows = $(this).nextAll();
+                        let order = parseInt($(this).children('td.order').text());
                         for (let i = 0; i < nextRows.length; ++i) {
-                            $(nextRows[i]).children('.order').text(order);
+                            $(nextRows[i]).children('td.order').text(order);
                             ++order;
                         }
                     });
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng ấn Ctrl + F5");
                 }
-            });
-        }
-    </script>
+            }
+        });
+    }
+</script>
 @endsection

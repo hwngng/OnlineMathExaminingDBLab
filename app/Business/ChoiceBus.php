@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Business;
 
 use App\Common\ApiResult;
@@ -29,8 +29,14 @@ class ChoiceBus extends BaseBus
 			$choices[$len]['question_id'] = $questionId;
 			$choices[$len]['id'] = $len;
 			$choices[$len]['content'] = htmlspecialchars($choice['content']);
-			$choices[$len]['is_solution'] = $choice['sol'] == '1' ? 1 : 0;
-			
+			$choices[$len]['is_solution'] = isset($choice['sol']) && $choice['sol'] == '1' ? 1 : 0;
+
+			if (empty($choice['content']))
+			{
+				$this->destroy($choice['question_id'], $choice['id']);
+				continue;
+			}
+
 			++$len;
 		}
 		return $this->getChoiceDAL()->insertForQuestion($questionId, $choices);
@@ -57,7 +63,7 @@ class ChoiceBus extends BaseBus
 			$choice['id'] = $len;
 			$choice['content'] = htmlspecialchars($choiceForm['content']);
 			$choice['is_solution'] = isset($choiceForm['sol']) && $choiceForm['sol'] == '1' ? 1 : 0;
-			
+
 			if (empty($choice['content']))
 			{
 				$this->destroy($choice['question_id'], $choice['id']);
@@ -71,7 +77,7 @@ class ChoiceBus extends BaseBus
 		return $apiResult;
 	}
 
-	public function destroy ($questionId, $choiceId)	
+	public function destroy ($questionId, $choiceId)
 	{
 		return $this->getChoiceDAL()->destroy($questionId, $choiceId);
 	}
