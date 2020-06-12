@@ -34,7 +34,9 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('list')->get('/', 'QuestionController@index');
                 Route::name('create')->get('/create', 'QuestionController@create')->middleware('authorize:teacher');
                 Route::name('store')->post('/', 'QuestionController@store')->middleware('authorize:teacher');
-                Route::name('destroy')->get('/destroy/{id}', 'QuestionController@destroy');
+                Route::name('destroy')->get('/destroy/{id}', 'QuestionController@destroy')->middleware('authorize:teacher');
+                Route::name('edit')->get('/edit/{id}', 'QuestionController@edit')->middleware('authorize:teacher');
+                Route::name('update')->post('/update', 'QuestionController@update')->middleware('authorize:teacher');
             });
         });
 

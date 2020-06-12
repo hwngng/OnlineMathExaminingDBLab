@@ -23,7 +23,6 @@
 @section('content')
 <div class="container">
     <div class="align-content-center">
-        {{-- <div style="margin: 0 10% 0 10%" class=""> --}}
         <div style="margin-bottom: 10px">
             <a class="btn btn-success float-right" href="{{  route('teacher.question.create') }}" target="_blank">Thêm câu hỏi <i
                     class="fas fa-plus"></i></a>
@@ -43,19 +42,46 @@
                 @endphp
                 @isset($questions)
                 @foreach ($questions as $question)
-                <tr>
-                    <td>{{ $i++ }}</td>
+                <tr id="{{ $question->id }}">
+                    <td class="order" >{{ $i++ }}</td>
                     <td>{!! htmlspecialchars_decode($question->content) !!}</td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm" href="{{ route('teacher.question.destroy', $question->id) }}"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('teacher.question.edit', $question->id) }}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="deleteQuestion(event, {{ $question->id }})"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 @endforeach
                 @endisset
             </tbody>
         </table>
-        {{-- </div> --}}
     </div>
 </div>
+@endsection
+
+@section('end')
+    <script>
+        function deleteQuestion (e, questionId) {
+            e.preventDefault();
+            $.ajax({
+                type: "get",
+                url: "{{ route('teacher.question.destroy', '') }}" + '/' + questionId,
+                success: function (response) {
+                    if (response['return_code'] == 0) {
+                        $('#' + questionId).animate("fast").animate({
+                            opacity : "hide"
+                        }, "slow", function () {
+                            let nextRows = $(this).nextAll();
+                            let order = parseInt($(this).children('td.order').text());
+                            for (let i = 0; i < nextRows.length; ++i) {
+                                $(nextRows[i]).children('td.order').text(order);
+                                ++order;
+                            }
+                        });
+                    } else {
+                        alert("Có lỗi xảy ra, vui lòng ấn Ctrl + F5");
+                    }
+                }
+            });
+        }
+    </script>
 @endsection

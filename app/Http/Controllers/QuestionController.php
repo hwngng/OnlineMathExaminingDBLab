@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Business\QuestionBus;
+use App\Common\ApiResult;
 use App\Http\Requests\QuestionRequest;
 
 class QuestionController extends Controller
@@ -19,9 +20,9 @@ class QuestionController extends Controller
 
     public function index ()
     {
-        $questions = $this->getQuestionBus()->getAll();
+        $apiResult = $this->getQuestionBus()->getAll();
         $viewData = [
-            'questions' => $questions
+            'questions' => $apiResult->questions
         ];
         
         return view('question.index', $viewData);
@@ -35,12 +36,30 @@ class QuestionController extends Controller
     public function store (QuestionRequest $questionRequest)
     {
         $apiResult = $this->getQuestionBus()->insert($questionRequest);
-        return redirect(route('teacher.question.create'));
+        return response()->json($apiResult->report());
+    }
+
+    public function edit ($questionId)
+    {
+        $apiResult = $this->getQuestionBus()->getById($questionId);
+        $viewData = [
+            'question' => $apiResult->question
+        ];
+        
+        return view('question.edit', $viewData);
+    }
+
+    public function update (QuestionRequest $questionRequest)
+    {
+        $apiResult = $this->getQuestionBus()->update($questionRequest);
+
+        return response()->json($apiResult->report());
     }
 
     public function destroy ($questionId)
     {
         $apiResult = $this->getQuestionBus()->destroy($questionId);
-        return redirect(route('teacher.question.list'));
+        
+        return response()->json($apiResult->report());
     }
 }

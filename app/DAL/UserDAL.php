@@ -22,12 +22,12 @@ class UserDAL extends BaseDAL
 										'birthdate',
 										'mobile_phone',
 										'telephone',
+										'grade_id',
 										'address',
 										'parent_name',
 										'parent_phone',
 										'role_ids')
-							->with('school:id,name', 'grade:id')
-							
+							->with('school:id,name')
 							->get();
 		$apiResult->grades = Grade::select('id')->get();
 		$apiResult->schools = School::select('id', 'name', 'address')->get();
