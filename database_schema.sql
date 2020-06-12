@@ -71,7 +71,6 @@ create table `question` (
 	`id` int not null auto_increment,
     `content` varchar(6000),
     `grade_id` char(4),
-    `solution_choice_ids` varchar(50),
     `solution` text,
     `deleted_at` datetime,
     `deleted_by` int,
@@ -83,6 +82,7 @@ create table `choice` (
 	`id` int not null,
     `question_id` int not null,
     `content` varchar(1000),
+    `is_solution` tinyint(1),
 	constraint `pk_choice_question_id_id` primary key (`question_id`, `id`)
 );
 
@@ -267,3 +267,30 @@ values
 (4, 'THPT Hồng Quang', '', 'Chương Dương, Trần Phú, TP Hải Dương, Hải Dương'),
 (5, 'THPT chuyên Khoa học Tự nhiên', '', '182 đường Lương Thế Vinh, quận Thanh Xuân, Hà Nội'),
 (6, 'THPT Thăng Long', '', 'Số 44, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội');
+
+insert into `question`
+(`id`, `content`, `solution`)
+values
+(10, '\\(\\sqrt(4) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{10}{5}\\)'),
+(11, '\\(\\sqrt(9) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{18}{2}\\)'),
+(12, '\\(\\sqrt(16) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{100}{25}\\)'),
+(13, '\\(\\sqrt(25) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{50}{10}\\)');
+insert into `choice`
+(`id`, `question_id`, `content`, `is_solution`)
+values
+(0, 10, '2', true),
+(1, 10, '3', false),
+(2, 10, '1.9', false),
+(3, 10, '\\(\\sqrt(2)^2\\)', true),
+(0, 11, '3', true),
+(1, 11, '4', false),
+(2, 11, '2.9', false),
+(3, 11, '\\(\\sqrt(3)^2\\)', true),
+(0, 12, '4', true),
+(1, 12, '5', false),
+(2, 12, '3.9', false),
+(3, 12, '\\(\\sqrt(4)^2\\)', true),
+(0, 13, '5', true),
+(1, 13, '6', false),
+(2, 13, '4.9', false),
+(3, 13, '\\(\\sqrt(5)^2\\)', true);

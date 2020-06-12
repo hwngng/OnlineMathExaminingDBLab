@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Role;
+use App\Common\Constant;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -57,7 +58,7 @@ class User extends Authenticatable
 
     public function hasARoleIn ($roles)
     {
-        $currentRoles = explode('|', $this->role_ids);
+        $currentRoles = explode(Constant::$SEPARATOR, $this->role_ids);
         foreach($roles as $role) {
             if (in_array(Role::$ROLE[$role], $currentRoles)) {
                 return true;
@@ -68,7 +69,7 @@ class User extends Authenticatable
 
     public function hasRole ($role)
     {
-        $currentRoles = explode('|', $this->role_ids);
+        $currentRoles = explode(Constant::$SEPARATOR, $this->role_ids);
         if (in_array(Role::$ROLE[$role], $currentRoles))
         {
             return true;
