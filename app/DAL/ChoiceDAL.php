@@ -13,7 +13,7 @@ class ChoiceDAL extends BaseDAL
 		$ret = new ApiResult();
 		try
 		{
-			$choices = (array) $choices;
+			$choices = $choices;
 			$result = Choice::insert($choices);
 			if ($result)
 				$ret->fill('0', 'Success.');
@@ -27,4 +27,82 @@ class ChoiceDAL extends BaseDAL
 		}
 		return $ret;
 	}
+
+	public function insert ($choice)
+	{
+		$ret = new ApiResult();
+
+		if (isset($choice['question_id']) && isset($choice['id']))
+		{
+			$result = Choice::insert([
+				'question_id' => $choice['question_id'],
+				'id' => $choice['id'],
+				'content' => $choice['content'],
+				'is_solution' => $choice['is_solution']
+			]);
+
+			if ($result)
+			{
+				$ret->fill('0', 'Success');
+			}
+			else
+			{
+				$ret->fill('1', 'Cannot insert, database error.');
+			}
+		}
+		else 
+		{
+			$ret->fill('1', 'Uninitialized Choice ID.');
+		}
+		return $ret;
+	}
+
+	public function updateOrCreate ($choice)
+	{
+		$ret = new ApiResult();
+		try
+		{
+			if (isset($choice['question_id']) && isset($choice['id']))
+			{
+				$result = Choice::updateOrCreate(
+									['question_id' => $choice['question_id'], 'id' => $choice['id']],
+									['content' => $choice['content'], 'is_solution' => $choice['is_solution']]
+								);
+
+				$ret->fill('0', 'Success.');
+				$ret->affectedRows = $result;
+			}
+			else 
+			{
+				$ret->fill('1', 'Uninitialized Choice ID.');
+			}
+		}
+		catch (\Exception $e)
+		{
+			$ret->fill($e->getCode(), $e->getMessage());
+			// log smth
+		}
+		return $ret;
+	}
+
+	public function destroy ($questionId, $choiceId)
+	{
+		$ret = new ApiResult();
+		try
+		{
+			$result = Choice::where('question_id', $questionId)
+							->where('id', $choiceId)
+							->delete();
+				
+			$ret->fill('0', 'Success.');
+			$ret->affectedRows = $result;
+		}
+		catch (\Exception $e)
+		{
+			$ret->fill($e->getCode(), $e->getMessage());
+			// log smth
+		}
+		return $ret;
+	}
+
 }

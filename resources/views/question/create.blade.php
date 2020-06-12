@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <div class="align-content-center">
-        @include('question.form')
+        @include('question.form', ['action' => 'create'])
     </div>
 </div>
 @endsection
