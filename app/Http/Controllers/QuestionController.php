@@ -39,6 +39,13 @@ class QuestionController extends Controller
         return response()->json($apiResult->report());
     }
 
+    public function update (QuestionRequest $questionRequest)
+    {
+        $apiResult = $this->getQuestionBus()->update($questionRequest);
+
+        return response()->json($apiResult->report());
+    }
+
     public function edit ($questionId)
     {
         $apiResult = $this->getQuestionBus()->getById($questionId);
@@ -49,12 +56,6 @@ class QuestionController extends Controller
         return view('question.edit', $viewData);
     }
 
-    public function update (QuestionRequest $questionRequest)
-    {
-        $apiResult = $this->getQuestionBus()->update($questionRequest);
-
-        return $apiResult;
-    }
 
     public function destroy ($questionId)
     {
