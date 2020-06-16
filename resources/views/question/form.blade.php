@@ -10,9 +10,20 @@
     @csrf
     <div class="form-group">
 		<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
-		<label for="content">Nội dung câu hỏi:</label>
-        <textarea class="form-control" name="content" id="content">{{ isset($question->content) ? htmlspecialchars_decode($question->content) : '' }}</textarea>
-        <button type="button" class="add-choice btn btn-primary">Thêm lựa chọn <i class="fa fa-plus"></i></button>
+		<label for="grade_id" class="font-weight-bold">Lớp: </label>
+		<select name="grade_id" id="grade">
+			@foreach ($grades as $grade)
+				<option value="{{ $grade->id }}" {{ isset($question) && $question->grade_id == $grade->id ? 'selected' : '' }}>{{ $grade->id }}</option>
+			@endforeach
+		</select>
+		<br>
+		<label for="content" class="font-weight-bold">Nội dung câu hỏi:</label>
+		<textarea class="form-control" name="content" id="content">{{ isset($question->content) ? htmlspecialchars_decode($question->content) : '' }}</textarea>
+		<br>
+		<label for="solution" class="font-weight-bold">Lời giải:</label>
+        <textarea class="form-control" name="solution" id="solution">{{ isset($question->solution) ? htmlspecialchars_decode($question->solution) : '' }}</textarea>
+		<br>
+		<button type="button" class="add-choice btn btn-primary">Thêm lựa chọn <i class="fa fa-plus"></i></button>
 
 		<div class="choices">
 		@php
@@ -40,7 +51,7 @@
 			@endfor
 		@endif
 		</div>
-	
+		<br>
 		<button type="submit" class="btn btn-primary">
 			@if ($action == 'create')
 				Tạo câu hỏi
@@ -55,6 +66,11 @@
 <script src="https://cdn.ckeditor.com/4.12.0/standard-all/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('content', {
+        customConfig: '/js/ckeditor/config.js',
+        extraPlugins: 'ckeditor_wiris'
+	});
+
+	CKEDITOR.replace('solution', {
         customConfig: '/js/ckeditor/config.js',
         extraPlugins: 'ckeditor_wiris'
 	});
@@ -113,7 +129,7 @@
 							window.location.reload();
 						}
 						@else
-							window.location.pathname = "{{ route('teacher.question.list', [], false) }}";
+							close();
 						@endif
 					} else {
 						alert("Thêm câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.")

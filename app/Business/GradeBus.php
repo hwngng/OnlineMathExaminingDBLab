@@ -17,7 +17,10 @@ class GradeBus extends BaseBus
 		return $this->gradeDAL;
 	}
 
-
+	public function getAllId ()
+	{
+		return $this->getGradeDAL()->getAllId();
+	}
 
 	
 }

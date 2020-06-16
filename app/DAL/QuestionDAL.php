@@ -1,10 +1,9 @@
 <?php
 namespace App\DAL;
 
-use App\Common\ApiResult;
 use App\DAL\BaseDAL;
 use App\Models\Question;
-use App\Common\Constant;
+use App\Common\ApiResult;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionDAL extends BaseDAL
@@ -17,6 +16,7 @@ class QuestionDAL extends BaseDAL
 									'content')
 							->get();
 		$ret->questions = $questions;
+		
 		return $ret;
 	}
 
@@ -30,7 +30,8 @@ class QuestionDAL extends BaseDAL
 							->where('id', $id)
 							->with('choices:id,question_id,content,is_solution')
 							->first();
-		$ret->question = $question;
+	$ret->question = $question;
+
 		return $ret;
 	}
 
@@ -41,6 +42,7 @@ class QuestionDAL extends BaseDAL
 		$questionORM = new Question();
 		$questionORM->content = $question['content'];
 		$questionORM->solution = $question['solution'];
+		$questionORM->grade_id = $question['grade_id'];
 
 		$result = $questionORM->save();
 
@@ -70,6 +72,10 @@ class QuestionDAL extends BaseDAL
 				if (isset($question['solution']))
 				{
 					$questionORM->solution = $question['solution'];
+				}
+				if (isset($question['grade_id']))
+				{
+					$questionORM->grade_id = $question['grade_id'];
 				}
 
 				$result = $questionORM->save();
