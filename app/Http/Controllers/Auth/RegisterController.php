@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Business\UserBus;
+use GuzzleHttp\Psr7\Request;
+use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -51,7 +55,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        
+        //TODO: validate grade, school
         return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
@@ -77,4 +81,6 @@ class RegisterController extends Controller
         $user->save();
         return $user;
     }
+
+
 }

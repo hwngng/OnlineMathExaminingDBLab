@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Business;
 
 use App\DAL\GradeDAL;
@@ -17,7 +17,11 @@ class GradeBus extends BaseBus
 		return $this->gradeDAL;
 	}
 
+    public function getAllId ()
+	{
+		return $this->gradeDAL->getAllId();
+	}
 
 
-	
+
 }

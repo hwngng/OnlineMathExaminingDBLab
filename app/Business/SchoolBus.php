@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Business;
 
 use App\DAL\SchoolDAL;
@@ -17,7 +17,10 @@ class SchoolBus extends BaseBus
 		return $this->schoolDAL;
 	}
 
+    public function getAll ()
+	{
+		return $this->schoolDAL->getAll();
+	}
 
 
-	
 }

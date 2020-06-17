@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Business;
 
 use App\DAL\RoleDAL;
@@ -17,7 +17,10 @@ class RoleBus extends BaseBus
 		return $this->roleDAL;
 	}
 
+    public function getAll ()
+	{
+		return $this->roleDAL->getAll();
+	}
 
 
-	
 }
