@@ -13,7 +13,8 @@ class QuestionDAL extends BaseDAL
 	{
 		$ret = new ApiResult();
 		$questions = Question::select('id',
-									'content')
+									'content',
+									'grade_id')
 							->get();
 		$ret->questions = $questions;
 		
@@ -30,7 +31,7 @@ class QuestionDAL extends BaseDAL
 							->where('id', $id)
 							->with('choices:id,question_id,content,is_solution')
 							->first();
-	$ret->question = $question;
+		$ret->question = $question;
 
 		return $ret;
 	}

@@ -20,7 +20,8 @@ DB_PASSWORD=<password>
 ```
 Save .env and finally, run:
 ```
-mysql -u '<username>'@'<host>' '-p<password>' < database_schema.sql
+mysql -u '<username>'@'<host>' '-p<password>' < database/database_schema.sql
 php artisan serve
 ```
 
+Note: you can use dumped data inside `database/data/`

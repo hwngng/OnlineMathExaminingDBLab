@@ -38,6 +38,11 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('edit')->get('/edit/{id}', 'QuestionController@edit')->middleware('authorize:teacher');
                 Route::name('update')->post('/update', 'QuestionController@update')->middleware('authorize:teacher');
             });
+
+            Route::name('test.')->prefix('test')->group(function () {
+                Route::name('list')->get('/', 'TestController@index');
+                Route::name('create')->get('/create', 'TestController@create');
+            });
         });
 
     Route::name('admin.')
