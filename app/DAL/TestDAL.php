@@ -21,10 +21,7 @@ class TestDAL extends BaseDAL
 							'no_of_questions',
 							'created_at',
 							'created_by')
-					->with('createdBy:id,
-									username,
-									first_name,
-									last_name')
+					->with('createdBy:id,username,first_name,last_name')
 					
 					->get();
 		$ret->tests = $tests;
@@ -44,20 +41,20 @@ class TestDAL extends BaseDAL
 							'created_at',
 							'created_by')
 					->where('id', $id)
-					->with('createdBy:id,
-									username,
-									first_name,
-									last_name')
+					->with('createdBy:id,username,first_name,last_name')
 					->first();
 		$ret->test = $test;
 
-		$testContents = TestContent::select('question_id',
-											'question_order')
+		$includedQuestions = TestContent::select('question_id',
+											'question_order',
+											'content')
 									->where('test_id', $id)
 									->where('test_code', $code)
-									->with('question:content')
+									->join('question', function($join) {
+								        $join->on('question.id', '=', 'test_content.question_id');
+								    })
 									->get();
-		$ret->test->testContents = $testContents;
+		$ret->test->questions = $includedQuestions;
 
 		return $ret;
 	}

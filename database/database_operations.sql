@@ -84,3 +84,35 @@ values
 update `question`
 set deleted_at = null;
 
+select * from `test_content`;
+insert into `test_content`
+(`test_id`, `test_code`, `question_id`)
+values (1, 2, 3);
+
+select * from `test`;
+
+select * from `question`;
+
+insert into `test`
+(`code`, `name`, `grade_id`, `duration`, `description`, `no_of_questions`)
+values
+(0, 'Kiểm tra ngắn', '11', 5, 'Bài kiểm tra ngắn cho lớp 11A, trường THPT Gia Lộc', 10);
+update `test`
+set created_by=1;
+
+select * from user;
+
+select * from `test_content`;
+insert into `test_content`
+(`test_id`, `test_code`, `question_id`)
+values
+(1, 0, 10),
+(1, 0, 11),
+(1, 0, 12),
+(1, 0, 13),
+(1, 0, 16),
+(1, 0, 14),
+(1, 0, 26),
+(1, 0, 27),
+(1, 0, 28),
+(1, 0, 29);
