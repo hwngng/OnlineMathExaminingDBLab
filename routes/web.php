@@ -59,4 +59,13 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('update')->post('/update/{id}', 'UserController@update')->middleware('authorize:admin');
             });
         });
+    Route::name('student.')
+        ->prefix('student')
+        ->middleware('authorize:student')
+        ->group(function () {
+            Route::name('index')->get('/', 'StudentController@index');
+            Route::name('user.')->prefix('user')->group(function () {
+                Route::name('list')->get('/', 'UserController@index');
+            });
+        });
 });
