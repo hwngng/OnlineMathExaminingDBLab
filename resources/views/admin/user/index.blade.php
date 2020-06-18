@@ -196,6 +196,7 @@
             }
         })
 
+        //     const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
 
 
         // remove row
