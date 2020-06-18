@@ -69,6 +69,10 @@ Route::group(['middleware' => ['auth']], function () {
         ->middleware('authorize:student')
         ->group(function () {
             Route::name('index')->get('/', 'StudentController@index');
-            Route::name('join')->get('/{id}', 'StudentController@index');
+            Route::name('about')->get('/about/{id}', 'StudentController@about');
+            Route::name('test.')->prefix('test')->group(function () {
+                Route::name('list')->get('/', 'StudentController@getTests');
+                Route::name('join')->get('/{id}', 'StudentController@getTest')->middleware('authorize:student');
+            });
         });
 });
