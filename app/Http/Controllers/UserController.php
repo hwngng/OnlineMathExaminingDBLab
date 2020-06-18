@@ -35,13 +35,8 @@ class UserController extends Controller
     public function createUser(UserRequest $request)
     {
 
-        \Debugbar::info($request->username);
-
-
-
-        // // TODO: insert new grade, school
-        // $user->school_id = 1;
-
+        // TODO: insert new grade, school
+        // $request->school_id = 1;
 
         $request->email = isset($request['email']) ? $request['email'] : NULL;
         $request->telephone = isset($request['telephone']) ? $request['telephone'] : NULL;
@@ -52,27 +47,11 @@ class UserController extends Controller
         return response()->json($apiResult->report());
     }
 
-    public function store(UserRequest $userRequest)
-    {
-        $apiResult = $this->getUserBus()->insert($userRequest);
-        return response()->json($apiResult->report());
-    }
-
     public function update(UserRequest $userRequest)
     {
         $apiResult = $this->getUserBus()->update($userRequest);
 
         return response()->json($apiResult->report());
-    }
-
-    public function edit($questionId)
-    {
-        $apiResult = $this->getUserBus()->getById($questionId);
-        $viewData = [
-            'question' => $apiResult->question
-        ];
-
-        return view('user.edit', $viewData);
     }
 
 

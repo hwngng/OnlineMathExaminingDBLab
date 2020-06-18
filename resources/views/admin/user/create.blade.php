@@ -177,7 +177,7 @@
     </form>
 </div>
 
-@section('end')
+@section('script')
 
 <script>
 
@@ -187,16 +187,20 @@
         let form_url = $(this).attr("action");
         let form_method = $(this).attr("method");
 
-        let schoolId = $('#school').attr("value");
-        console.log(schoolId);
-        console.log($(this).school)
+
+        //TODO: get school_id from form
+        // let schoolId = $('#school').attr("value");
+        // console.log(schoolId);
+
         let form_data = $(this).serialize();
+        $(this)['school_id'] = $('#school').val();
+
+
         console.log(form_data);
         $.ajax({
             type: form_method,
             url: form_url,
             data: form_data,
-            // dataType: 'JSON',
             success: function (response) {
                 if (response['return_code'] == '0') {
                     if (!confirm("Thêm tài khoản thành công!\nBạn có muốn tiếp tục tạo câu hỏi?")) {
