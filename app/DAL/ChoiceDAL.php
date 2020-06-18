@@ -74,7 +74,7 @@ class ChoiceDAL extends BaseDAL
 			}
 			else
 			{
-				$ret->fill('1', 'Uninitialized Choice ID.');
+				$ret->fill('1', 'Uninitialized Choice ID or Question ID.');
 			}
 		}
 		catch (\Exception $e)

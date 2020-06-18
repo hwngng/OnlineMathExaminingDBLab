@@ -6,6 +6,7 @@ use App\Business\TestBus;
 use App\Business\GradeBus;
 use Illuminate\Http\Request;
 use App\Business\QuestionBus;
+use App\Http\Requests\TestRequest;
 
 class TestController extends Controller
 {
@@ -49,6 +50,28 @@ class TestController extends Controller
 
     public function create ()
     {
-        return view('test.create');
+        $apiResult = $this->getGradeBus()->getAllId();
+        $viewData = [
+            'durations' => [5, 10, 15, 20, 25, 30, 45, 60, 90],
+            'quantity' => [5, 10, 12, 15, 20, 30, 35, 40, 45, 50, 60],
+            'grades' => $apiResult->grades
+        ];
+
+        return view('test.create', $viewData);
+    }
+
+    public function store (TestRequest $testRequest)
+    {
+
+    }
+
+    public function edit ($testId)
+    {
+    
+    }
+
+    public function update (TestRequest $testRequest)
+    {
+        
     }
 }
