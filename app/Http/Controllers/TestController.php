@@ -50,11 +50,13 @@ class TestController extends Controller
 
     public function create ()
     {
-        $apiResult = $this->getGradeBus()->getAllId();
+        $apiResultGradeBus = $this->getGradeBus()->getAllId();
+        $apiResultQuestionBus = $this->getQuestionBus()->getAll();
         $viewData = [
             'durations' => [5, 10, 15, 20, 25, 30, 45, 60, 90],
             'quantity' => [5, 10, 12, 15, 20, 30, 35, 40, 45, 50, 60],
-            'grades' => $apiResult->grades
+            'grades' => $apiResultGradeBus->grades,
+            'questions' => $apiResultQuestionBus->questions
         ];
 
         return view('test.create', $viewData);

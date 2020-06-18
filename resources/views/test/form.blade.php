@@ -10,19 +10,51 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
 	<style>
 		div.scrollable {
-			height: 8em;
+			max-height: 10em;
 			margin: 0;
 			padding: 0;
 			overflow: auto;
 		}
+		.order-header {
+			width: 3%;
+		}
+		.action-header {
+			width: 10%;
+		}
+		.content-header {
+			width: 82%
+		}
+		.grade-header {
+			width: 5%;
+		}
+		.select-header-modal {
+			width: 14%;
+		}
+		.question-header-modal {
+			width: 81%;
+		}
+		.grade-header-modal {
+			width: 5%
+		}
+		.modal-dialog{
+			overflow-y: initial !important
+		}
+		.modal-body{
+			height: 80vh;
+			overflow-y: auto;
+		}
 	</style>
 @endsection
 
-<form method="post" action="{{ $action == 'create' ? route('teacher.test.store', [], false) : route('teacher.test.update', [], false) }}" >
+<form method="post" action="{{ $action == 'create' ? route('teacher.test.store', [], false) : route('teacher.test.update', [], false) }}" id="test">
 	@csrf
 	<div class="form-group">
 	  <label for="name" class="font-weight-bold required">Tên đề thi:</label>
-	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia">
+	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia...">
+	</div>
+	<div class="form-group">
+	  <label for="description">Ghi chú</label>
+	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An..."></textarea>
 	</div>
 	<div class="d-flex justify-content-between">
 		<div class="form-group">
@@ -57,44 +89,13 @@
 		<table class="table table-hover" id="questions">
 			<thead>
 				<tr>
-					<th class="w-em-6">Thao tác</th>
-					<th>Nội dung</th>
-					<th>Lớp</th>
+					<th class="order-header">STT</th>
+					<th class="action-header">Thao tác</th>
+					<th class="content-header">Nội dung</th>
+					<th class="grade-header">Lớp</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>
-						<a class="text-success" href="#" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
-						<a class="text-primary" href="#" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
-						<a class="text-danger" href="#" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
-					</td>
-					<td>
-						<div class="scrollable">
-						Integer auctor, felis et sagittis rhoncus, ligula ante varius nisl, eget posuere turpis enim sodales dolor. Praesent blandit mi sed est posuere, eget pellentesque quam iaculis. Ut facilisis interdum purus, sed mattis metus imperdiet ut. Pellentesque aliquet dolor risus, sed vehicula enim porttitor at. In non posuere tortor, at sagittis felis. Etiam vel hendrerit elit. Cras vulputate posuere tortor sed faucibus. Nullam volutpat pretium ultricies. Nam efficitur at nisi eu auctor. Sed nec mollis nulla. Cras ut pharetra erat. Praesent sollicitudin laoreet malesuada. Aenean volutpat tempus ipsum vel dapibus.
-
-Sed at dolor lacus. Donec tempus enim sed nisi molestie accumsan. Cras sagittis dignissim placerat. Aliquam finibus tellus tincidunt elit fringilla scelerisque. Etiam eu lobortis ante, vitae semper lectus. Phasellus convallis nunc ex, non ultrices nunc imperdiet nec. Nam in massa non ipsum ultricies feugiat. Suspendisse lacinia est arcu, a dapibus ligula porttitor interdum. Praesent nec fermentum justo.
-						</div>
-					</td>
-					<td>
-						11
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a class="text-success" href="#" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
-						<a class="text-primary" href="#" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
-						<a class="text-danger" href="#" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
-					</td>
-					<td>
-						Aenean maximus pellentesque magna a tristique. Donec vel semper enim. Nulla et feugiat lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi sagittis faucibus metus, quis rutrum nisi iaculis nec. Nunc facilisis laoreet lacus, et congue nibh faucibus in. Nulla pharetra ligula urna, eget pulvinar sapien ullamcorper eget.
-
-Sed bibendum in massa non gravida. Suspendisse vel ante ornare, tempor diam ac, egestas dui. Praesent blandit quam in pretium vehicula. Mauris ut erat non tortor volutpat fermentum. Nullam et augue nec ligula ornare porta. Suspendisse commodo ex eu libero vulputate hendrerit. Mauris nec maximus tellus. Morbi nisl dui, vestibulum vel volutpat a, aliquam in eros. Pellentesque varius mauris imperdiet, convallis mi vitae, commodo tellus.
-					</td>
-					<td>
-						12
-					</td>
-				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -110,7 +111,7 @@ Sed bibendum in massa non gravida. Suspendisse vel ante ornare, tempor diam ac, 
 	</div>
 </form>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="question-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 	  <div class="modal-content">
 		<div class="modal-header">
@@ -130,18 +131,129 @@ Sed bibendum in massa non gravida. Suspendisse vel ante ornare, tempor diam ac, 
 	</div>
 </div>
 
+<div class="modal fade" id="question-picker" tabindex="-1">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title">Lựa chọn câu hỏi:</h5>
+		  <button type="button" class="close" data-dismiss="modal">
+			<span>&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+			<input type="hidden" id="selected-row" value="">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="select-header-modal">Lựa chọn</th>
+						{{-- <th class="order-header-modal">STT</th> --}}
+						<th class="question-header-modal">Câu hỏi</th>
+						<th class="grade-header-modal">Lớp</th>
+					</tr>
+				</thead>
+				<tbody>
+					@php
+					$i = 1
+					@endphp
+					@isset($questions)
+					@foreach ($questions as $question)
+					<tr class="question-row">
+						<td class="text-center">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="question_id" value="{{ $question->id }}">
+								<label >{{ $i++ }}</label>
+							</div>
+						</td>
+						{{-- <td class="order" >{{ $i++ }}</td> --}}
+						<td class="content scrollable">{!! htmlspecialchars_decode($question->content) !!}</td>
+						<td class="grade">{{ $question->grade_id }}</td>
+					</tr>
+					@endforeach
+					@endisset
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+		  <button type="button" class="btn btn-primary" id="choose">Xác nhận</button>
+		</div>
+	  </div>
+	</div>
+</div>
+
+
+
+
 @section('end')
 <script>
-	let quantity = $('#quantity option:selected');
+	const pickQuestion = function (e) {
+			
+	}
 
-	quantity.on("change", function (e) {
-		let qty = parseInt($(this).val());
-		
-		let questions = '';
-		for (let i = 0; i < qty; ++i) {
-			questions += ''	
-		}
+	$(document).ready(function () {
+		let quantity = $('#quantity');
+		let qpicker = $('#question-picker');
+		let testForm = $('#test');
 
+
+		quantity.on('change', function (e) {
+			let qty = parseInt($(this).val());
+			
+			let questions = '';
+			for (let i = 0; i < qty; ++i) {
+				questions += `<tr>
+								<td class="order">${i+1}</td>
+								<td>
+									<a class="picker text-success" href="" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
+									<a class="info text-primary" href="" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
+									<a class="clear text-danger" href="" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
+								</td>
+								<td>
+									<input type="hidden" name="question_ids[${i}]" class="question-id" value="">
+									<div class="content scrollable">
+									</div>
+								</td>
+								<td class="grade">
+								</td>
+							</tr>
+							`;
+			}
+
+			$("#questions>tbody").html(questions);
+		});
+
+		@if ($action == 'create')
+			quantity.trigger('change');
+		@endif
+
+		testForm.find('.picker').on('click', function (e) {
+			e.preventDefault();
+
+			let row = $(this).parent().parent();
+			let selectedRow = row.find('.order').text();
+			qpicker.find('#selected-row').val(selectedRow);
+			qpicker.find('input[name="question_id"]:checked').prop('checked', false);
+
+			qpicker.modal('show');
+		});
+
+		qpicker.find('#choose').on('click', function (e) {
+			let rowOrder = parseInt(qpicker.find('#selected-row').val());
+			let selectedRadio = qpicker.find('input[name="question_id"]:checked')
+			let selectedRow = selectedRadio.parent().parent().parent();
+			let selectedQuestion = selectedRadio.val();
+
+			let curRow = testForm.find(`#questions>tbody>tr:eq(${rowOrder-1})`);
+			$(curRow).find('.question-id').val(selectedQuestion);
+			$(curRow).find('.content').html(selectedRow.find('.content').html());
+			$(curRow).find('.grade').text(selectedRow.find('.grade').text());
+
+			qpicker.modal('hide');
+		});
+
+		qpicker.find('.question-row').on('click', function (e) {
+			$(this).find('input[type="radio"]').prop('checked', true);
+		})
 	});
 	
 </script>

@@ -13683,8 +13683,6 @@ __webpack_require__.r(__webpack_exports__);
 
 window.$ = window.jQuery = _jquery_js__WEBPACK_IMPORTED_MODULE_0___default.a;
 
-__webpack_require__(/*! ./jquery.js */ "./resources/js/jquery.js");
-
 __webpack_require__(/*! ./popper.min.js */ "./resources/js/popper.min.js");
 
 __webpack_require__(/*! ./bootstrap.js */ "./resources/js/bootstrap.js"); // window.Vue = require('vue');
