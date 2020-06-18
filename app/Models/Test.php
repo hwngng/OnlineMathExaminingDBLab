@@ -35,16 +35,16 @@ class Test extends Model
         });
     }
 
-    public function scopeQuestions ($query)
-    {
-        return $query->join('test_content', function ($join)
-        {
-            $join->on('test.id', '=', 'test_content.test_id');
-            $join->on('test.code', '=', 'test_content.test_code');
-        })
-        ->join('question', function($join)
-        {
-            $join->on('question.id', '=', 'test_content.test_code');
-        });
-    }
+    // public function scopeQuestions ($query)
+    // {
+    //     return $query->join('test_content', function ($join)
+    //     {
+    //         $join->on('test.id', '=', 'test_content.test_id');
+    //         $join->on('test.code', '=', 'test_content.test_code');
+    //     })
+    //     ->join('question', function($join)
+    //     {
+    //         $join->on('question.id', '=', 'test_content.test_code');
+    //     });
+    // }
 }

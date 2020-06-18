@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\DAL;
 
 use App\DAL\BaseDAL;
@@ -13,7 +13,6 @@ class ChoiceDAL extends BaseDAL
 		$ret = new ApiResult();
 		try
 		{
-			$choices = $choices;
 			$result = Choice::insert($choices);
 			if ($result)
 				$ret->fill('0', 'Success.');
@@ -34,12 +33,13 @@ class ChoiceDAL extends BaseDAL
 
 		if (isset($choice['question_id']) && isset($choice['id']))
 		{
-			$result = Choice::insert([
-				'question_id' => $choice['question_id'],
-				'id' => $choice['id'],
-				'content' => $choice['content'],
-				'is_solution' => $choice['is_solution']
-			]);
+			$choiceORM = new Choice();
+			$choiceORM->question_id = $choice['question_id'];
+			$choiceORM->id = $choice['id'];
+			$choiceORM->content = $choice['content'];
+			$choiceORM->is_solution = $choice['is_solution'];
+
+			$result = $choiceORM->save();
 
 			if ($result)
 			{
@@ -50,9 +50,9 @@ class ChoiceDAL extends BaseDAL
 				$ret->fill('1', 'Cannot insert, database error.');
 			}
 		}
-		else 
+		else
 		{
-			$ret->fill('1', 'Uninitialized Choice ID.');
+			$ret->fill('1', 'Uninitialized Choice ID or Question ID.');
 		}
 		return $ret;
 	}
@@ -72,7 +72,7 @@ class ChoiceDAL extends BaseDAL
 				$ret->fill('0', 'Success.');
 				$ret->affectedRows = $result;
 			}
-			else 
+			else
 			{
 				$ret->fill('1', 'Uninitialized Choice ID.');
 			}
@@ -93,7 +93,7 @@ class ChoiceDAL extends BaseDAL
 			$result = Choice::where('question_id', $questionId)
 							->where('id', $choiceId)
 							->delete();
-				
+
 			$ret->fill('0', 'Success.');
 			$ret->affectedRows = $result;
 		}

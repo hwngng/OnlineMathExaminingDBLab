@@ -26,15 +26,12 @@ class ChoiceBus extends BaseBus
 		$choices = [];
 		foreach ($choicesForm as $choice)
 		{
-			$choices[$len]['question_id'] = $questionId;
-			$choices[$len]['id'] = $len;
-			$choices[$len]['content'] = htmlspecialchars($choice['content']);
-			$choices[$len]['is_solution'] = isset($choice['sol']) && $choice['sol'] == '1' ? 1 : 0;
-
-			if (empty($choice['content']))
+			if (!empty($choice['content']))
 			{
-				$this->destroy($choice['question_id'], $choice['id']);
-				continue;
+				$choices[$len]['question_id'] = $questionId;
+				$choices[$len]['id'] = $len;
+				$choices[$len]['content'] = htmlspecialchars($choice['content']);
+				$choices[$len]['is_solution'] = isset($choice['sol']) && $choice['sol'] == '1' ? 1 : 0;
 			}
 
 			++$len;

@@ -37,6 +37,7 @@ class QuestionBus extends BaseBus
 	public function insert($question)
 	{
 		$question['content'] = htmlspecialchars($question['content']);
+		$question['solution'] = htmlspecialchars($question['solution']);
 		$apiResult = $this->getQuestionDAL()->insert($question);
 		$choiceBus = new ChoiceBus();
 		$apiResult->insertChoice = $choiceBus->insertForQuestion($apiResult->questionId, $question['choices']);
@@ -47,6 +48,7 @@ class QuestionBus extends BaseBus
 	public function update ($question)
 	{
 		$question['content'] = htmlspecialchars($question['content']);
+		$question['solution'] = htmlspecialchars($question['solution']);
 		$apiResult = $this->getQuestionDAL()->update($question);
 		$choiceBus = new ChoiceBus();
 		$apiResult->updateChoice = $choiceBus->updateForQuestion($question['id'], $question['choices']);

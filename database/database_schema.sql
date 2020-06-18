@@ -76,7 +76,7 @@ create table `question` (
     `deleted_by` int,
     constraint `pk_question_id` primary key (`id`)
 );
-    
+
 drop table if exists `choice`;
 create table `choice` (
 	`id` int not null,
@@ -92,6 +92,7 @@ create table `test` (
     `code` int not null default 0,
     `name` varchar(200) not null,
     `grade_id` char(4),
+    `duration` smallint,
     `description` text,
     `no_of_questions` smallint,
     `created_at` datetime,
@@ -249,48 +250,48 @@ foreign key (`question_id`) references `question` (`id`)
 on update cascade
 on delete restrict;
 
-delete from `role`;
-insert into `role`
-values (1, 'admin', null),
-		(2, 'teacher', null),
-        (3, 'student', null);
-        
-delete from `grade`;
-insert into `grade` values (10, 'Lớp 10'), (11, 'Lớp 11'), (12, 'Lớp 12');
+-- delete from `role`;
+-- insert into `role`
+-- values (1, 'admin', null),
+-- 		(2, 'teacher', null),
+--         (3, 'student', null);
 
-delete from `school`;
-insert into `school`
-values
-(1, 'THCS Lê Thanh Nghị', '', 'Gia Tân, Gia Lộc, Hải Dương'),
-(2, 'THPT Gia Lộc', '', 'TT Gia Lộc, Gia Lộc, Hải Dương'),
-(3, 'THPT Chuyên Nguyễn Trãi', '', 'Đường Ngô Quyền, TP Hải Dương, Hải Dương'),
-(4, 'THPT Hồng Quang', '', 'Chương Dương, Trần Phú, TP Hải Dương, Hải Dương'),
-(5, 'THPT chuyên Khoa học Tự nhiên', '', '182 đường Lương Thế Vinh, quận Thanh Xuân, Hà Nội'),
-(6, 'THPT Thăng Long', '', 'Số 44, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội');
+-- delete from `grade`;
+-- insert into `grade` values (10, 'Lớp 10'), (11, 'Lớp 11'), (12, 'Lớp 12');
 
-insert into `question`
-(`id`, `content`, `solution`)
-values
-(10, '\\(\\sqrt(4) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{10}{5}\\)'),
-(11, '\\(\\sqrt(9) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{18}{2}\\)'),
-(12, '\\(\\sqrt(16) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{100}{25}\\)'),
-(13, '\\(\\sqrt(25) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{50}{10}\\)');
-insert into `choice`
-(`id`, `question_id`, `content`, `is_solution`)
-values
-(0, 10, '2', true),
-(1, 10, '3', false),
-(2, 10, '1.9', false),
-(3, 10, '\\(\\sqrt(2)^2\\)', true),
-(0, 11, '3', true),
-(1, 11, '4', false),
-(2, 11, '2.9', false),
-(3, 11, '\\(\\sqrt(3)^2\\)', true),
-(0, 12, '4', true),
-(1, 12, '5', false),
-(2, 12, '3.9', false),
-(3, 12, '\\(\\sqrt(4)^2\\)', true),
-(0, 13, '5', true),
-(1, 13, '6', false),
-(2, 13, '4.9', false),
-(3, 13, '\\(\\sqrt(5)^2\\)', true);
+-- delete from `school`;
+-- insert into `school`
+-- values
+-- (1, 'THCS Lê Thanh Nghị', '', 'Gia Tân, Gia Lộc, Hải Dương'),
+-- (2, 'THPT Gia Lộc', '', 'TT Gia Lộc, Gia Lộc, Hải Dương'),
+-- (3, 'THPT Chuyên Nguyễn Trãi', '', 'Đường Ngô Quyền, TP Hải Dương, Hải Dương'),
+-- (4, 'THPT Hồng Quang', '', 'Chương Dương, Trần Phú, TP Hải Dương, Hải Dương'),
+-- (5, 'THPT chuyên Khoa học Tự nhiên', '', '182 đường Lương Thế Vinh, quận Thanh Xuân, Hà Nội'),
+-- (6, 'THPT Thăng Long', '', 'Số 44, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội');
+
+-- insert into `question`
+-- (`id`, `content`, `solution`)
+-- values
+-- (10, '\\(\\sqrt(4) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{10}{5}\\)'),
+-- (11, '\\(\\sqrt(9) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{18}{2}\\)'),
+-- (12, '\\(\\sqrt(16) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{100}{25}\\)'),
+-- (13, '\\(\\sqrt(25) = ?\\)', 'Because \\(\\sqrt(4) = \\frac{50}{10}\\)');
+-- insert into `choice`
+-- (`id`, `question_id`, `content`, `is_solution`)
+-- values
+-- (0, 10, '2', true),
+-- (1, 10, '3', false),
+-- (2, 10, '1.9', false),
+-- (3, 10, '\\(\\sqrt(2)^2\\)', true),
+-- (0, 11, '3', true),
+-- (1, 11, '4', false),
+-- (2, 11, '2.9', false),
+-- (3, 11, '\\(\\sqrt(3)^2\\)', true),
+-- (0, 12, '4', true),
+-- (1, 12, '5', false),
+-- (2, 12, '3.9', false),
+-- (3, 12, '\\(\\sqrt(4)^2\\)', true),
+-- (0, 13, '5', true),
+-- (1, 13, '6', false),
+-- (2, 13, '4.9', false),
+-- (3, 13, '\\(\\sqrt(5)^2\\)', true);

@@ -81,3 +81,6 @@ values
 (2, 13, '4.9', false),
 (3, 13, '\\(\\sqrt(5)^2\\)', true);
 
+update `question`
+set deleted_at = null;
+
