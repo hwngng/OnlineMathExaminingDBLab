@@ -43,4 +43,9 @@ class Question extends Model
             $join->on('test.code', '=', 'test_content.test_code');
         });
     }
+
+    public function testContent ()
+    {
+        return $this->hasMany('App\Models\TestContent', 'question_id', 'id');
+    }
 }

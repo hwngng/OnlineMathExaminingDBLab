@@ -8,23 +8,27 @@
 
 <form method="POST" action="{{ $action == 'create' ? route('teacher.question.store', [], false) : route('teacher.question.update', [], false) }}" id="form">
     @csrf
+	<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
     <div class="form-group">
-		<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
 		<label for="grade_id" class="font-weight-bold">Lớp: </label>
 		<select name="grade_id" id="grade">
 			@foreach ($grades as $grade)
 				<option value="{{ $grade->id }}" {{ isset($question) && $question->grade_id == $grade->id ? 'selected' : '' }}>{{ $grade->id }}</option>
 			@endforeach
 		</select>
-		<br>
+	</div>
+	<div class="form-group">
 		<label for="content" class="font-weight-bold">Nội dung câu hỏi:</label>
 		<textarea class="form-control" name="content" id="content">{{ isset($question->content) ? htmlspecialchars_decode($question->content) : '' }}</textarea>
-		<br>
+	</div>
+	<div class="form-group">
 		<label for="solution" class="font-weight-bold">Lời giải:</label>
         <textarea class="form-control" name="solution" id="solution">{{ isset($question->solution) ? htmlspecialchars_decode($question->solution) : '' }}</textarea>
-		<br>
+	</div>
+	<div class="form-group">
 		<button type="button" class="add-choice btn btn-primary">Thêm lựa chọn <i class="fa fa-plus"></i></button>
-
+	</div>
+	<div class="form-group">
 		<div class="choices">
 		@php
 			$noOfChoices = $action == 'create' ? 1 : count($question->choices);
@@ -51,7 +55,8 @@
 			@endfor
 		@endif
 		</div>
-		<br>
+	</div>
+	<div class="form-group">
 		<button type="submit" class="btn btn-primary">
 			@if ($action == 'create')
 				Tạo câu hỏi
@@ -59,7 +64,7 @@
 				Cập nhật câu hỏi
 			@endif
 		</button>
-    </div>
+	</div>
 </form>
 
 @section('end')

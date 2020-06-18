@@ -51,6 +51,7 @@ class QuestionController extends Controller
     public function store (QuestionRequest $questionRequest)
     {
         $apiResult = $this->getQuestionBus()->insert($questionRequest);
+        
         return response()->json($apiResult->report());
     }
 
