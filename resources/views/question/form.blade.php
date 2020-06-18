@@ -75,7 +75,7 @@
 	});
 
 	var curChoice = 65;
-	var noOfChoice = {{ $noOfChoices }}
+	var noOfChoice = {{ $noOfChoices }};
 	for (let i = 0; i < noOfChoice; ++i) {
 		CKEDITOR.replace(String.fromCharCode(curChoice + i), {
 			customConfig: '/js/ckeditor/config_basic.js',
