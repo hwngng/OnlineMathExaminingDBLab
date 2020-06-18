@@ -31,18 +31,3 @@ const notify = (msg,type) => {
     $('#message').fadeToggle(500);
 
 }
-
-//logic
-
-
-
-
-function fetch_data() {
-    $.ajax({
-        url: "{{ route('admin.user.fetch', '') }}",
-        dataType: "json",
-        success: function (data) {
-            $('tbody').html(newTr);
-        }
-    });
-}

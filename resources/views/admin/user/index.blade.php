@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+@csrf
 <!-- Editable table -->
 <div class="card">
     <h3 class="card-header text-center font-weight-bold text-uppercase py-4">User Dashboard</h3>
@@ -14,8 +15,9 @@
     </div>
     <div class="card-body">
         <div id="table" class="table-editable">
-            <span class="table-add float-right mb-3 mr-2" class="text-success" data-toggle="modal" data-target="#exampleModal"><a href="javascript:void(0)" ><i
-                        class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
+            <span class="table-add float-right mb-3 mr-2" class="text-success" data-toggle="modal"
+                data-target="#exampleModal"><a href="javascript:void(0)"><i class="fas fa-plus fa-2x"
+                        aria-hidden="true"></i></a></span>
             <table class="table table-bordered table-responsive-md table-striped text-center">
                 <thead>
                     <tr>
@@ -41,78 +43,67 @@
                     @endphp
                     @isset($users)
                     @foreach ($users as $user)
-                    <tr id=" user-{{ $user->stt }}">
+                    <tr id=" user-{{ $user->id }}">
                         <td class="pt-3-half">{{ $user->avatar }}</td>
-                        <td class="pt-3-half" contenteditable="true">{{ $user->username }}</td>
-                        <td class="pt-3-half" contenteditable="true">{{ $user->email }}</td>
-                        <td class="pt-3-half" contenteditable="true">{{ $user->last_name }}</td>
-                        <td class="pt-3-half" contenteditable="true">{{ $user->first_name }} </td>
-                        <td class="pt-3-half">
-                            <select class=" custom-select d-block w-100" id="role" required>
+                        <td id="username" class="pt-3-half">{{ $user->username }}</td>
+                        <td id="email" class="pt-3-half changeable" contenteditable="true">{{ $user->email }}</td>
+                        <td id="last_name" class="pt-3-half changeable" contenteditable="true">
+                            {{ $user->last_name }}</td>
+                        <td id="first_name" class="pt-3-half changeable" contenteditable="true">
+                            {{ $user->first_name }} </td>
+                        <td class="pt-3-half changeable">
+                            <select class=" custom-select d-block w-100" id="role_ids" required>
                                 @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}> {{ $role->name }} </option>
+                                <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
+                                    {{ $role->name }} </option>
                                 @endforeach
                             </select>
                         </td>
-                        <td class="pt-3-half">
-                            <select class=" custom-select d-block w-100" id="grade" required>
+                        <td class="pt-3-half changeable">
+                            <select class=" custom-select d-block w-100" id="grade_id" required>
+                                <option {{ !isset($user->grade_id) ? 'selected value="-1"' : '' }}>....</option>
                                 @foreach ($grades as $grade)
-                                    <option value="{{ $grade->id }}" {{ $user->grade_id == $grade->id ? 'selected' : '' }}> {{ $grade->id }} </option>
+                                <option value="{{ $grade->id }}" {{ $user->grade_id == $grade->id ? 'selected' : '' }}>
+                                    {{ $grade->id }}
+                                </option>
                                 @endforeach
-                                <option {{ !isset($user->grade_id) ? 'selected' : '' }}>....</option>
                             </select>
 
 
                         </td>
-                        <td class="pt-3-half" contenteditable="true">{{ $user->address }}</td>
-                        <td class="pt-3-half">
-                            <select class=" custom-select d-block w-100" id="school" required>
+                        <td class="pt-3-half changeable" id="address" contenteditable="true">{{ $user->address }}</td>
+                        <td class="pt-3-half changeable">
+                            <select class=" custom-select d-block w-100" id="school_id" required>
+                                <option {{ !isset($user->school_id) ? ' selected value="-1" ' : '' }}>....</option>
                                 @foreach ($schools as $school)
-
-                                @isset($user->school_id)
-                                @if($school->id == $user->school_id)
-                                <option selected>{{ $school->name }}</option>
-                                @else
-                                <option>{{ $school->name }}</option>
-
-                                @endif
-
-                                @endisset
-
-
-                                @empty($user->school_id)
-                                <option selected>....</option>
-                                @endempty
-
-
+                                <option value="{{ $school->id }}"
+                                    {{ $user->school_id == $school->id ? 'selected' : '' }}> {{ $school->name }}
+                                </option>
                                 @endforeach
                             </select>
                         </td>
-                        <td class="pt-3-half" contenteditable="true">{{ $user->mobile_phone }}</td>
-                        <td class="pt-3-half" contenteditable="true">
-                            <input type="date" value="{{ $user->birthdate }}">
+                        <td class="pt-3-half changeable" contenteditable="true" id="telephone">{{ $user->telephone }}</td>
+                        <td class="pt-3-half changeable">
+                            <input id="birthdate" type="date" value="{{ $user->birthdate }}">
                         </td>
 
                         <td>
                             <span class="table-reset">
-                                <button type="button" class="btn btn-primary btn-rounded btn-sm my-0">
-                                    <i class="fas fa-unlock" aria-hidden="true"></i>
+                                <button type="button" class="btn btn-primary btn-rounded btn-sm my-0 table-reset-btn">
+                                    <i class="fas fa-key" aria-hidden="true"></i>
                                 </button>
                             </span>
                         </td>
-                        <td>
-                            <span class="table-save">
-                                <button type="button" class="btn btn-success btn-rounded btn-sm my-0">
-                                    <i class="fas fa-check" aria-hidden="true"></i>
-                                </button>
-                            </span>
+                        <td class="table-save">
+                            <button type="button" class="btn btn-success btn-rounded btn-sm my-0 table-save-btn"
+                                disabled>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                            </button>
                         </td>
-                        <td>
-                            <span class="table-remove">
-                                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">
-                                    <i class="fas fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </span>
+                        <td class='table-remove'>
+                            <button type="button" class="btn btn-danger btn-rounded btn-sm my-0 table-remove-btn">
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                            </button>
                         </td>
                     </tr>
                     @endforeach
@@ -150,24 +141,65 @@
 
 <script src="{{ asset('js/user.js') }}"></script>
 <script>
+
+
+
+
     $(document).ready(function () {
-        $('.table-add').on('click', 'i', () => {
+        // $('.table-add').on('click', 'i', () => {
 
-            const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
+        //     const $clone = $tableID.find('tbody tr').last().clone(true).removeClass('hide table-line');
 
-            if ($tableID.find('tbody tr').length === 0) {
+        //     if ($tableID.find('tbody tr').length === 0) {
 
-                $('tbody').append(newTr);
+        //         $('tbody').append(newTr);
+        //     }
+
+        //     $tableID.find('table').append($clone);
+        // });
+
+
+        // add change event on contenteditable field
+        $('td[contenteditable=true]').focus(function () {
+            $(this).data("initialText", $(this).html());
+        }).on('input blur ', function () {
+            if ($(this).data("initialText") !== $(this).html()) {
+                let t = $(this).siblings('.table-save').data($(this).attr("id"), $(this).text());
+                $(this).trigger('change');
             }
+        }).on('change', function () {
+            let btn = $(this).siblings('.table-save').children();
+            let icon = $(btn).children();
 
-            $tableID.find('table').append($clone);
+            btn.removeClass('btn-success');
+            btn.addClass('btn-warning');
+            btn.prop('disabled', false);
+            icon.removeClass('fa-check');
+            icon.addClass('fa-minus')
+        })
+
+
+        // add change event on select field
+        $('td select , td input').focus(function () {
+            $(this).data("initialText", $(this).val());
+        }).change(function () {
+            if ($(this).data("initialText") !== $(this).val()) {
+                let t = $(this).parent().siblings('.table-save');
+                t.data( $(this).attr("id"), $(this).val() );
+                let btn = t.children();
+                let icon = $(btn).children();
+                btn.removeClass('btn-success');
+                btn.addClass('btn-warning');
+                btn.prop('disabled', false);
+                icon.removeClass('fa-check');
+                icon.addClass('fa-minus')
+            }
+        })
 
 
 
-
-        });
-
-        $tableID.on('click', '.table-remove', function () {
+        // remove row
+        $tableID.on('click', '.table-remove-btn', function () {
             let selectedRow = $(this).parents()[1];
             let userId = $(selectedRow).attr('id').split('-')[1];
             if (confirm("Are you sure you want to delete this user ?")) {
@@ -178,19 +210,49 @@
                     success: () => {
                         notify('Deleted !', 'success');
                         $(this).parents('tr').detach();
+                    },
+                    failure: () => {
+                        notify('Error ! Can not delete !', 'error');
                     }
                 });
             }
+        });
+
+
+
+
+
+        //update row
+        $tableID.on('click', '.table-save-btn', function () {
+            let selectedRow = $(this).parents()[1];
+            let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            let userId = +$(selectedRow).attr('id').split('-')[1];
+            let self = $(this);
+            data = self.parent().data();
+            data['_token'] = CSRF_TOKEN;
+            data['id'] = userId;
+            console.log(data);
+            let icon = $(self).children();
+            $.ajax({
+                method: "post",
+                url: "{{ route('admin.user.update', '') }}" + '/' + userId,
+                data: data,
+                success: () => {
+                    self.removeClass('btn-warning');
+                    self.addClass('btn-success');
+                    self.prop('disabled', true);
+                    icon.removeClass('fa-minus');
+                    icon.addClass('fa-check');
+                    notify('Updated !', 'success');
+                }
+            });
 
 
 
         });
 
-        $tableID.on('click', '.table-save', function () {
 
-
-        });
-
+        //reset password
         $tableID.on('click', '.table-reset', function () {
 
 

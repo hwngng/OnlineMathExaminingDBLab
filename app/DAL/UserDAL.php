@@ -20,7 +20,7 @@ class UserDAL extends BaseDAL
                                     avatar,
                                     first_name,
                                     birthdate,
-                                    mobile_phone,
+                                    telephone,
                                     address,
                                     role_ids as role_id,
                                     grade_id,
@@ -62,7 +62,6 @@ class UserDAL extends BaseDAL
         $userORM->school_id = $user->school_id;
         $userORM->role_ids = $user->role_ids;
 
-
         $userORM->email = $user->email;
         $userORM->birthdate = $user->birthdate;
         $userORM->telephone = $user->telephone;
@@ -89,13 +88,55 @@ class UserDAL extends BaseDAL
 			{
 				$userORM = User::find($user['id']);
 
-				if (isset($user['content']))
+				if (isset($user['first_name']))
 				{
-					$userORM->content = $user['content'];
+					$userORM->first_name = $user['first_name'];
+                }
+
+                if (isset($user['last_name']))
+				{
+					$userORM->last_name = $user['last_name'];
+                }
+
+                if (isset($user['username']))
+				{
+					$userORM->username = $user['username'];
+                }
+
+                if (isset($user['email']))
+				{
+					$userORM->email = $user['email'];
+                }
+
+                if (isset($user['address']))
+				{
+					$userORM->address = $user['address'];
+                }
+
+                if (isset($user['school_id']))
+				{
+					$userORM->school_id = $user['school_id'];
+                }
+
+                if (isset($user['role_ids']))
+				{
+					$userORM->role_ids = $user['role_ids'];
+                }
+
+                if (isset($user['grade_id']))
+				{
+					$userORM->grade_id = $user['grade_id'];
+                }
+
+
+                if (isset($user['birthdate']))
+				{
+					$userORM->birthdate = $user['birthdate'];
 				}
-				if (isset($user['solution']))
+
+				if (isset($user['telephone']))
 				{
-					$userORM->solution = $user['solution'];
+					$userORM->telephone = $user['telephone'];
 				}
 
 				$result = $userORM->save();

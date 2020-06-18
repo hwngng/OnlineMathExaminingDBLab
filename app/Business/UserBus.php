@@ -45,17 +45,13 @@ class UserBus extends BaseBus
 
 	public function insert($user)
 	{
-        \Debugbar::info($user->first_name);
 		$apiResult = $this->getUserDAL()->insert($user);
 		return $apiResult;
 	}
 
 	public function update ($user)
 	{
-		// $user['content'] = htmlspecialchars($user['content']);
 		$apiResult = $this->getUserDAL()->update($user);
-		// $choiceBus = new ChoiceBus();
-		// $apiResult->updateChoice = $choiceBus->updateForuser($user['id'], $user['choices']);
 
 		return $apiResult;
 	}

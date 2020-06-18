@@ -50,10 +50,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('user.')->prefix('user')->group(function () {
                 Route::name('list')->get('/', 'UserController@index');
                 Route::name('create')->post('/create', 'UserController@createUser')->middleware('authorize:admin');
-                Route::name('store')->post('/', 'UserController@store')->middleware('authorize:admin');
                 Route::name('destroy')->get('/destroy/{id}', 'UserController@destroy')->middleware('authorize:admin');
                 Route::name('edit')->get('/edit/{id}', 'UserController@edit')->middleware('authorize:admin');
-                Route::name('update')->post('/update', 'UserController@update')->middleware('authorize:admin');
+                Route::name('update')->post('/update/{id}', 'UserController@update')->middleware('authorize:admin');
             });
         });
 });
