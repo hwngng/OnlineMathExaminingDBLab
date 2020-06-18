@@ -10,10 +10,20 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
 	<style>
 		div.scrollable {
-			height: 8em;
+			max-height: 10em;
 			margin: 0;
 			padding: 0;
 			overflow: auto;
+		}
+
+		.action-header {
+			width: 10%;
+		}
+		.content-header {
+			width: 85%
+		}
+		.grade-header {
+			width: 5%;
 		}
 	</style>
 @endsection
@@ -22,7 +32,11 @@
 	@csrf
 	<div class="form-group">
 	  <label for="name" class="font-weight-bold required">Tên đề thi:</label>
-	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia">
+	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia...">
+	</div>
+	<div class="form-group">
+	  <label for="description">Ghi chú</label>
+	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An..."></textarea>
 	</div>
 	<div class="d-flex justify-content-between">
 		<div class="form-group">
@@ -57,15 +71,17 @@
 		<table class="table table-hover" id="questions">
 			<thead>
 				<tr>
-					<th class="w-em-6">Thao tác</th>
-					<th>Nội dung</th>
-					<th>Lớp</th>
+					<th class="action-header">Thao tác</th>
+					<th class="content-header">Nội dung</th>
+					<th class="grade-header">Lớp</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
-						<a class="text-success" href="#" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
+						<span data-toggle="modal" data-target="#exampleModal">
+							<a class="text-success" href="#" data-toggle="tooltip" title="Chọn câu hỏi" data-target="#exampleModal"><i class="fas fa-crosshairs"></i></a>
+						</span>
 						<a class="text-primary" href="#" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
 						<a class="text-danger" href="#" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
 					</td>
@@ -82,7 +98,7 @@ Sed at dolor lacus. Donec tempus enim sed nisi molestie accumsan. Cras sagittis 
 				</tr>
 				<tr>
 					<td>
-						<a class="text-success" href="#" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
+						<a class="text-success" href="#" data-toggle="modal" title="Chọn câu hỏi" data-target="#exampleModal"><i class="fas fa-crosshairs"></i></a>
 						<a class="text-primary" href="#" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
 						<a class="text-danger" href="#" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
 					</td>
@@ -108,27 +124,29 @@ Sed bibendum in massa non gravida. Suspendisse vel ante ornare, tempor diam ac, 
 			@endif
 		</button>
 	</div>
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+			  ...
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	</div>
 </form>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-		  ...
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  <button type="button" class="btn btn-primary">Save changes</button>
-		</div>
-	  </div>
-	</div>
-</div>
+
 
 @section('end')
 <script>

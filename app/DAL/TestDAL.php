@@ -46,17 +46,19 @@ class TestDAL extends BaseDAL
 					->first();
 		$ret->test = $test;
 
-		$includedQuestions = TestContent::select('question_id',
-											'question_order',
-											'content')
+		$testContents = TestContent::select('test_id',
+											'test_code',
+											'question_id')
 									->where('test_id', $id)
 									->where('test_code', $code)
-									->join('question', function($join) {
-								        $join->on('question.id', '=', 'test_content.question_id');
-								    })
-                                    ->get();
+									->with('question.choices')
+									->get();
+		$questions = [];
+		foreach ($testContents as $testContent) {
+			$questions[] = $testContent->question;
+		}
+		$ret->test->questions = $questions;
 
-		$ret->test->questions = $includedQuestions;
 		return $ret;
 	}
 
@@ -68,6 +70,7 @@ class TestDAL extends BaseDAL
 		$testORM->code = 0;
 		$testORM->name = $test['name'];
 		$testORM->grade_id = $test['grade_id'];
+		$testORM->duration = $test['duration'];
 		$testORM->description = $test['description'];
 		$testORM->no_of_questions = $test['no_of_questions'];
 		$testORM->created_at = date("Y-m-d H:i:s");

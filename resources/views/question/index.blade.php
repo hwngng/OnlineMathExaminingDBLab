@@ -12,6 +12,28 @@
 <script type="text/javascript" src="{{ asset('js/mathjax/tex-chtml.js') }}"></script>
 {{-- <script type="text/javascript" async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
+
+<style>
+    div.scrollable {
+			max-height: 10em;
+			margin: 0;
+			padding: 0;
+			overflow: auto;
+	}
+    .order-header {
+        width: 3%;
+    }
+    .question-header {
+        width: 82%;
+    }
+    .grade-header {
+        width: 5%
+    }
+    .action-header {
+        width: 10%;
+    }
+
+</style>
 @endsection
 
 @section('content')
@@ -26,10 +48,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Câu hỏi</th>
-                    <th>Lớp</th>
-                    <th>Thao tác</th>
+                    <th class="order-header">STT</th>
+                    <th class="question-header">Câu hỏi</th>
+                    <th class="grade-header">Lớp</th>
+                    <th class="action-header">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +62,7 @@
                 @foreach ($questions as $question)
                 <tr id="{{ $question->id }}">
                     <td class="order" >{{ $i++ }}</td>
-                    <td style="max-width: 45em">{!! htmlspecialchars_decode($question->content) !!}</td>
+                    <td class="scrollable">{!! htmlspecialchars_decode($question->content) !!}</td>
                     <td>{{ $question->grade_id }}</td>
                     <td>
                         <a class="btn btn-primary btn-sm" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank"><i class="fas fa-edit"></i></a>
