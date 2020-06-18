@@ -11,7 +11,37 @@
 </script>
 <script type="text/javascript" src="{{ asset('js/mathjax/tex-chtml.js') }}"></script>
 {{-- <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
+	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
+	
+	<style>
+		.order-header {
+			width: 3%
+		}
+		.title-header {
+			width: 15%;
+		}
+		.grade-header {
+			width: 5%;
+		}
+		.no-question-header {
+			width: 10%
+		}
+		.duration-header {
+			width: 18%
+		}
+		.created-by-header {
+			width: 12%
+		}
+		.created-at-header {
+			width: 10%
+		}
+		.description-header {
+			width: 17%
+		}
+		.action-header {
+			width: 10%;
+		}
+	</style>
 @endsection
 
 @section('content')
@@ -23,18 +53,18 @@
 				</a>
 			</div>
 			<div class="">
-				<table class="table">
+				<table class="table table-bordered">
 				    <thead>
 				        <tr class="">
-				            <th>STT</th>
-				            <th>Tiêu đề</th>
-				            <th>Lớp</th>
-				            <th>Số câu hỏi</th>
-				            <th>Thời gian làm bài</th>
-				            <th>Người ra đề</th>
-				            <th>Tạo lúc</th>
-				            <th>Ghi chú</th>
-				            <th>Thao tác</th>
+				            <th class="order-header">STT</th>
+				            <th class="title-header">Tiêu đề</th>
+				            <th class="grade-header">Lớp</th>
+				            <th class="no-question-header">Số câu hỏi</th>
+				            <th class="duration-header">Thời gian làm bài</th>
+				            <th class="created-by-header">Người ra đề</th>
+				            <th class="created-at-header">Tạo lúc</th>
+				            <th class="description-header">Ghi chú</th>
+				            <th class="action-header">Thao tác</th>
 				        </tr>
 				    </thead>
 				    <tbody>
