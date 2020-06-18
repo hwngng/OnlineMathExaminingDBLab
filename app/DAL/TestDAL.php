@@ -1,10 +1,11 @@
-<?php 
+<?php
 namespace App\DAL;
 
 use ReturnMsg;
 use App\DAL\BaseDAL;
 use App\Models\Test;
 use App\Common\ApiResult;
+use App\Models\Question;
 use App\Models\TestContent;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,13 +18,12 @@ class TestDAL extends BaseDAL
 							'code',
 							'name',
 							'grade_id',
-							'duration',
 							'description',
 							'no_of_questions',
 							'created_at',
 							'created_by')
 					->with('createdBy:id,username,first_name,last_name')
-					
+
 					->get();
 		$ret->tests = $tests;
 
@@ -37,7 +37,6 @@ class TestDAL extends BaseDAL
 							'code',
 							'name',
 							'grade_id',
-							'duration',
 							'description',
 							'no_of_questions',
 							'created_at',
@@ -55,9 +54,9 @@ class TestDAL extends BaseDAL
 									->join('question', function($join) {
 								        $join->on('question.id', '=', 'test_content.question_id');
 								    })
-									->get();
-		$ret->test->questions = $includedQuestions;
+                                    ->get();
 
+		$ret->test->questions = $includedQuestions;
 		return $ret;
 	}
 
