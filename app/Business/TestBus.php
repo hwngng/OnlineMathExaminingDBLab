@@ -43,4 +43,16 @@ class TestBus extends BaseBus
     {
         return $this->getTestDAL()->getById($testId);
     }
+
+    public function getTestForStudent($testId)
+    {
+        $apiResult = $this->getTest($testId);
+
+        foreach ($apiResult->test->questions as $question) {
+            foreach ($question->choices as $choice) {
+                $choice->is_solution = null;
+            }
+        }
+        return $apiResult;
+    }
 }

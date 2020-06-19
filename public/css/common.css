@@ -2,3 +2,8 @@
 	content: "*";
 	color: red;
 }
+
+body {
+    font-size: 0.7rem;
+    background-color: beige;
+}

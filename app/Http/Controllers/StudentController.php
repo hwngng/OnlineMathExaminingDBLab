@@ -6,12 +6,14 @@ use App\Business\TestBus;
 use App\Business\GradeBus;
 use Illuminate\Http\Request;
 use App\Business\QuestionBus;
+use App\Business\WorkHistoryBus;
 
 class StudentController extends Controller
 {
     private $testBus;
     private $questionBus;
     private $gradeBus;
+
     private function getTestBus()
     {
         if ($this->testBus == null) {
@@ -33,6 +35,7 @@ class StudentController extends Controller
         }
         return $this->gradeBus;
     }
+
     public function index()
     {
 
@@ -50,14 +53,13 @@ class StudentController extends Controller
 
     public function getTest( $testId )
     {
-        $apiResult = $this->getTestBus()->getTest($testId);
+        $apiResult = $this->getTestBus()->getTestForStudent($testId);
         $viewData = [
             'test' => $apiResult->test
         ];
-        \Debugbar::info($viewData['test']->questions);
+        \Debugbar::info($viewData['test']);
         return view('student.test.join', $viewData);
     }
-
 
 
     public function about()

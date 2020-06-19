@@ -13685,7 +13685,9 @@ window.$ = window.jQuery = _jquery_js__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 __webpack_require__(/*! ./popper.min.js */ "./resources/js/popper.min.js");
 
-__webpack_require__(/*! ./bootstrap.js */ "./resources/js/bootstrap.js"); // window.Vue = require('vue');
+__webpack_require__(/*! ./bootstrap.js */ "./resources/js/bootstrap.js");
+
+__webpack_require__(/*! ./common.js */ "./resources/js/common.js"); // window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -18130,6 +18132,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     value: true
   });
 });
+
+/***/ }),
+
+/***/ "./resources/js/common.js":
+/*!********************************!*\
+  !*** ./resources/js/common.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var notify = function notify(msg, type) {
+  $('#message').addClass("alert-".concat(type));
+  $('#message').html("<strong> ".concat(msg, " </strong>"));
+  $('#message').removeClass('fade');
+  $('#message').delay(500);
+  $('#message').fadeToggle(500);
+};
 
 /***/ }),
 

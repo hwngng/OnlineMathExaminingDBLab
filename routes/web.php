@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('test.')->prefix('test')->group(function () {
                 Route::name('list')->get('/', 'StudentController@getTests');
                 Route::name('join')->get('/{id}', 'StudentController@getTest')->middleware('authorize:student');
+                Route::name('finish')->post('/finish', 'WorkHistoryController@create')->middleware('authorize:student');
+                Route::name('result')->get('result/{id}', 'WorkHistoryController@getResultById')->middleware('authorize:student');
             });
         });
 });

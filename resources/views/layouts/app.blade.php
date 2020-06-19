@@ -15,8 +15,10 @@
     @yield('header')
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<body class="pt-5">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
+        <div class="alert alert-success fade text-center fixed-top" role="alert" id="message">
+        </div>
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
