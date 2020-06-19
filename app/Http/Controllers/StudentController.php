@@ -13,7 +13,6 @@ class StudentController extends Controller
     private $testBus;
     private $questionBus;
     private $gradeBus;
-
     private function getTestBus()
     {
         if ($this->testBus == null) {
@@ -35,7 +34,6 @@ class StudentController extends Controller
         }
         return $this->gradeBus;
     }
-
     public function index()
     {
 

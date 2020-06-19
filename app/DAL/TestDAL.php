@@ -59,6 +59,7 @@ class TestDAL extends BaseDAL
 		}
 		$ret->test->questions = $questions;
 
+		$ret->test->questions = $includedQuestions;
 		return $ret;
 	}
 
