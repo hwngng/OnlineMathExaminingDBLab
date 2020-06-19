@@ -6,7 +6,7 @@
 
 import $ from './jquery.js';
 window.$ = window.jQuery = $;
-require('./popper.min.js')
+require('./popper.min.js');
 require('./bootstrap.js');
 require('./common.js');
 
