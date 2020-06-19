@@ -26,6 +26,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.height = '4em';
 	config.width = '40em';
+	config.enterMode = CKEDITOR.ENTER_BR // pressing the ENTER KEY input <br/>
+	config.shiftEnterMode = CKEDITOR.ENTER_P; //pressing the SHIFT + ENTER KEYS input <p>
 };
 
 CKEDITOR.plugins.addExternal( 'ckeditor_wiris', '/js/ckeditor/plugins/ckeditor_wiris/', 'plugin.js');

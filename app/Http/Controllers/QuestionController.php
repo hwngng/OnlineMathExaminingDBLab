@@ -38,6 +38,13 @@ class QuestionController extends Controller
         return view('question.index', $viewData);
     }
 
+    public function getById ($id)
+    {
+        $apiResult = $this->getQuestionBus()->getById($id);
+
+        return response()->json($apiResult->report('question'));
+    }
+
     public function create ()
     {
         $apiResult = $this->getGradeBus()->getAllId();
