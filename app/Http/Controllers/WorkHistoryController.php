@@ -25,7 +25,6 @@ class WorkHistoryController extends Controller
         $viewData = [
             'score' => $apiResult->score
         ];
-        \Debugbar::info($viewData['score']);
         return view('student.test.result', $viewData);
     }
 

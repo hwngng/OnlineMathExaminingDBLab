@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkHistoryDAL extends BaseDAL
 {
+
+
     public function getAll()
     {
 
@@ -66,23 +68,29 @@ class WorkHistoryDAL extends BaseDAL
         // $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
         // $workHistoryORM->ended_at = $workHistory['ended_at'];
 
-        //TODO: add to pivot table
-
-        for ($i=0; $i < $workHistory[]; $i++) {
-            # code...
-        }
-
-        $workHistoryORM->questions()
-            ->attach(
-                $workHistory['question']['id'],
-                ['choice_ids' => $workHistory['question']['choice_ids']]
-            );
-
 
 
         $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
 
         $result = $workHistoryORM->save();
+
+
+        //TODO: add to pivot table
+        $historyDetails = array();
+        for ($i = 0; $i < $workHistory['length']; $i++) {
+            $qid = $workHistory['question_id'][$i];
+            $cids = ['choice_ids' => $workHistory['choice_ids'][$i]];
+
+            $historyDetails += [$qid => $cids];
+        }
+
+        \Debugbar::info($historyDetails);
+
+
+        $workHistoryORM->questions()
+            ->attach($historyDetails);
+
+
 
         if ($result) {
             $ret->fill('0', 'Success');

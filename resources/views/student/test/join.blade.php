@@ -82,6 +82,7 @@
     </div>
 </div>
 
+
 @endsection
 @section('end')
 <script>
@@ -103,6 +104,7 @@
         data['_token'] = CSRF_TOKEN;
         data['question_id'] = [];
         data['choice_ids'] = [];
+        data['length'] = {{ $test->no_of_questions }};
         @php
         $i = 1
         @endphp
