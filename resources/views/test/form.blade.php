@@ -204,9 +204,9 @@
 				questions += `<tr>
 								<td class="order">${i+1}</td>
 								<td>
-									<a class="picker text-success" href="" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
-									<a class="info text-primary" href="" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
-									<a class="clear text-danger" href="" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
+									<a class="picker text-success" href="javascript:void(0)" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
+									<a class="info text-primary" href="javascript:void(0)" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
+									<a class="clear text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
 								</td>
 								<td>
 									<input type="hidden" name="question_ids[${i}]" class="question-id" value="">
@@ -230,12 +230,67 @@
 			e.preventDefault();
 
 			let row = $(this).parent().parent();
-			let selectedRow = row.find('.order').text();
-			qpicker.find('#selected-row').val(selectedRow);
+			let rowOrder = row.find('.order').text();
+			qpicker.find('#selected-row').val(rowOrder);
 			qpicker.find('input[name="question_id"]:checked').prop('checked', false);
 
 			qpicker.modal('show');
 		});
+
+		testForm.find('.clear').on('click', function (e) {
+			e.preventDefault();
+
+			let row = $(this).parent().parent();
+			row.find('.content').html('');
+		});
+
+		testForm.find('.info').on('click', function (e) { 
+			e.preventDefault();
+
+			let row = $(this).parent().parent();
+
+			let question_id = row.find('.question-id').val();
+			if (question_id) {
+				$.ajax({
+					type: "get",
+					url: "{{ route('teacher.question.get', '', false) }}"+`/${question_id}`,
+					dataType: "json",
+					success: function (response) {
+						console.log(response);
+					}
+				});
+			}
+			
+		})
+
+		testForm.submit(function (e) {
+			e.preventDefault();
+
+			let form_url = $(this).attr("action");
+			let form_method = $(this).attr("method");
+			var form_data = $(this).serialize();
+
+			$.ajax({
+				type: form_method,
+				url: form_url,
+				data: form_data,
+				success: function (response) {
+					if (response['return_code'] == '0') {
+						@if ($action == 'create')
+						if (!confirm("Thêm đề thành công!\nBạn có muốn tiếp tục tạo đề?")) {
+							close();
+						} else {
+							window.location.reload();
+						}
+						@else
+							close();
+						@endif
+					} else {
+						alert("Thêm đề thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại đề.")
+					}
+				}
+			});
+		})
 
 		qpicker.find('#choose').on('click', function (e) {
 			let rowOrder = parseInt(qpicker.find('#selected-row').val());

@@ -14,8 +14,14 @@ class ApiResult
 
 	public function report ()
 	{
-		return ['return_code' => $this->getRetCode(),
-				'return_message' => $this->getRetMsg()];
+		$report_items = func_get_args();
+		$report = ['return_code' => $this->getRetCode(), 'return_message' => $this->getRetMsg()];
+		foreach ($report_items as $item)
+		{
+			$report[$item] = $this->$item;
+		}
+		
+		return $report;
 	}
 
 	/**
