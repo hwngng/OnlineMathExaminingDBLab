@@ -68,7 +68,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="{{-- {{ route('student.index') }} --}}" data-toggle="dropdown">Học Sinh</a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{{ route('student.test.list') }}">Available test</a>
+                                <a class="dropdown-item" href="{{ route('student.index') }}">Available test</a>
                                 <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ Sơ</a>
                             </div>
                         </li>

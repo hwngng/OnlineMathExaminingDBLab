@@ -57,6 +57,9 @@ class LoginController extends Controller
             if (Gate::allows('be-admin')) {
                 $redirectTo = route('admin.index');
             }
+            if (Gate::allows('be-student')) {
+                $redirectTo = route('student.index');
+            }
         }
         return $redirectTo;
     }

@@ -20,6 +20,7 @@ Auth::routes([
 ]);
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/ckeditor', function () {
     return view('ckeditor');
@@ -73,8 +74,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('about')->get('/about/{id}', 'StudentController@about');
             Route::name('test.')->prefix('test')->group(function () {
                 Route::name('list')->get('/', 'StudentController@getTests');
-                Route::name('join')->get('/{id}', 'StudentController@getTest')->middleware('authorize:student');
-                Route::name('finish')->post('/finish', 'WorkHistoryController@create')->middleware('authorize:student');
+                Route::name('start')->get('/{id}', 'WorkHistoryController@getTest')->middleware('authorize:student');
+                Route::name('update')->post('/update/{id}', 'WorkHistoryController@updateTestResult')->middleware('authorize:student');
+                Route::name('finish')->post('/finish', 'WorkHistoryController@completeTest')->middleware('authorize:student');
                 Route::name('result')->get('result/{id}', 'WorkHistoryController@getResultById')->middleware('authorize:student');
             });
         });

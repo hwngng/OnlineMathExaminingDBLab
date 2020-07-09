@@ -20,12 +20,20 @@ class WorkHistoryBus extends BaseBus
     }
 
 
-    public function insert($resultForm)
+    public function insertATest($resultForm)
     {
         $apiResult = new ApiResult();
         $apiResult =  $this->getWorkHistoryDAL()->insert($resultForm);
         return $apiResult;
     }
+
+    public function insertAnAnswer($resultForm,$testId)
+    {
+        $apiResult = new ApiResult();
+        $apiResult =  $this->getWorkHistoryDAL()->insertAnAnswer($resultForm,$testId);
+        return $apiResult;
+    }
+
 
 
     public function getAll()

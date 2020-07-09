@@ -49,7 +49,7 @@
                         <td>{{ $test->created_at }}</td>
                         <td>{{ $test->description }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm" href=" {{ route('student.test.join',$test->id) }}"><i
+                            <a class="btn btn-primary btn-sm" href=" {{ route('student.test.start',$test->id) }}"><i
                                     class="fas fa-arrow-right"></i></a>
                         </td>
                     </tr>

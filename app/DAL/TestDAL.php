@@ -94,4 +94,8 @@ class TestDAL extends BaseDAL
             $ret->fill('1', 'Cannot insert, database error.');
         return $ret;
     }
+
+    public function start($test) {
+
+    }
 }

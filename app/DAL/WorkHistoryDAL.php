@@ -84,13 +84,47 @@ class WorkHistoryDAL extends BaseDAL
             $historyDetails += [$qid => $cids];
         }
 
-        \Debugbar::info($historyDetails);
-
-
         $workHistoryORM->questions()
             ->attach($historyDetails);
 
 
+
+        if ($result) {
+            $ret->fill('0', 'Success');
+            $ret->workHistoryId = $workHistoryORM->id;
+        } else
+            $ret->fill('1', 'Cannot insert, database error.');
+        return $ret;
+    }
+
+
+
+    public function insertAnAnswer($workHistory, $testId)
+    {
+
+
+        $ret = new ApiResult();
+
+        $workHistoryORM = new WorkHistory();
+
+        $workHistoryORM->user_id = Auth::id();
+        $workHistoryORM->test_id = $testId;
+
+
+        // $workHistoryORM->started_at = $workHistory['started_at'];
+        // $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
+        // $workHistoryORM->ended_at = $workHistory['ended_at'];
+
+
+
+        $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
+
+        $result = $workHistoryORM->save();
+
+        $qid = $workHistory['question_id'];
+        $cids = ['choice_ids' => $workHistory['choice_ids']];
+        $workHistoryORM->questions()
+            ->attach([$qid => $cids]);
 
         if ($result) {
             $ret->fill('0', 'Success');

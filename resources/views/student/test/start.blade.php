@@ -17,22 +17,45 @@
 @endsection
 
 @section('content')
+
+<!-- how dash array value is calculated -->
+<!-- perimeter = 2 * PI * radius -->
+<!-- perimeter = 2 * PI * 190 = 1193.80 -->
+
+<div class="container timer">
+    <svg width="400" height="400">
+        <circle r="190" cx="200" cy="200" stroke="green" stroke-width="15" fill="white"
+            transform="rotate(-90 200 200)" />
+    </svg>
+    <div class="timer-container">
+        <input id="duration" value="{{ 60 * $test->duration }}" disabled>
+    </div>
+
+</div>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar shadow-sm">
-            <ul class="nav nav-sidebar">
+            <ul class="nav nav-sidebar flex-column">
                 @php
                 $i = 1
                 @endphp
                 @foreach($test->questions as $q)
-                <li>
-                    <a href="#quest-{{ $i }}" class="nav-item">Câu {{ $i }}
-                        <span class="tick" id="tick-'.{{ $i++ }}.'">✓</span>
-                    </a>
+                <li class="nav-item px-3 ">
+                    <div class="row align-content-between full-height">
+                        <a href="#quest-{{ $i-1 }}" class="col-7">
+                            Câu {{ $i++ }}
+                        </a>
+                        <div class="col-1 mr-2 question-status" id="tick-{{ $q->id }}"></div>
+                        <div class=" col-2">
+                            <i class="fa fa-flag"></i>
+                        </div>
+                    </div>
+                    <hr>
                 </li>
                 @endforeach
+                <button type="submit" class="btn btn-success flex-end" id="test-submit">Hoàn Thành</button>
             </ul>
-            <button type="submit" class="btn btn-success" id="test-submit">Hoàn Thành</button>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="alert alert-success fade text-center" role="alert" id="message">
@@ -83,8 +106,10 @@
 </div>
 
 
+
 @endsection
 @section('end')
+<script src="{{ asset('js/doing-test.js') }}"></script>
 <script>
     const notify = (msg, type) => {
         $('#message').addClass(`alert-${type}`);
@@ -93,28 +118,30 @@
         $('#message').delay(500);
         $('#message').fadeToggle(500);
 
-    }
+    };
 
-    $('#test-submit').click(function () {
+    let getAllTestResult = () => {
         let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         let data = {};
-        let choice_ids = -1;
-        let question_id = -1;
         data['test_id'] = '{{ $test -> id }}';
         data['_token'] = CSRF_TOKEN;
         data['question_id'] = [];
         data['choice_ids'] = [];
         data['length'] = {{ $test->no_of_questions }};
-        @php
-        $i = 1
-        @endphp
 
-        @foreach($test -> questions as $q)
-        [choice_ids, question_id] = [ $('input[name="choice-{{ $q->id }}"]:checked').val() || '-1' , '{{ $q->id }}'];
+        for (let i = 1; i <=  data['length'] ; i++) {
+            let choice_ids = -1;
+            for (let j = 65; j < 65+4; j++) {
+                answerDOM = $(`input[id="choice-${j}-${i}"]`);
+                if(answerDOM.is(':checked')) {
+                    choice_ids = answerDOM.val();
+                }
+                [_, question_id] = answerDOM.attr('name').split('-');
+            }
+            data['question_id'].push(question_id);
+            data['choice_ids'].push(choice_ids);
+        }
 
-        data['question_id'].push(question_id);
-        data['choice_ids'].push(choice_ids);
-        @endforeach
         console.log(data);
         $.ajax({
             method: "POST",
@@ -125,9 +152,37 @@
                 // window.location.assign('{{ route('student.test.result', Auth:: user() -> id) }}');
             }
         });
+    }
 
+    $('input[id^="choice-"]').change(function() {
+
+        let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        let data = {};
+        data['_token'] = CSRF_TOKEN;
+        [_, question_id] = $(this).attr('name').split('-');
+        choice_ids = $(this).val();
+
+        data['question_id'] = question_id;
+        data['choice_ids'] = choice_ids;
+
+        console.log(data);
+        $.ajax({
+            method: "POST",
+            url: "{{ route('student.test.update','') }}" + '/' + '{{ $test->id }}',
+            data: data,
+            success: function () {
+                $(`#tick-${question_id}`).addClass('tick');
+                notify('Answered !!', 'success');
+            }
+        });
     })
 
+
+
+
+    $('#test-submit').click(function () {
+        getAllTestResult();
+    })
 
 </script>
 

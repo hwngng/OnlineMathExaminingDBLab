@@ -7,6 +7,9 @@ use App\Business\GradeBus;
 use Illuminate\Http\Request;
 use App\Business\QuestionBus;
 use App\Business\WorkHistoryBus;
+use App\Http\Requests\TestRequest;
+use App\Http\Requests\UserRequest;
+use DebugBar\DebugBar;
 
 class StudentController extends Controller
 {
@@ -34,30 +37,25 @@ class StudentController extends Controller
         }
         return $this->gradeBus;
     }
-    public function index()
-    {
 
-        return view('student.index');
+    public function index(TestRequest $request)
+    {
+        return $this->getAllAvailableTests($request);
+        // return redirect()->route('student.test.list');
     }
 
-    public function getTests()
+    public function getAllAvailableTests(TestRequest $request)
     {
         $apiResult = $this->getTestBus()->getAll();
         $viewData = [
             'tests' => $apiResult->tests,
         ];
+        \Debugbar::info($request->session());
         return view('student.test.index', $viewData);
     }
 
-    public function getTest( $testId )
-    {
-        $apiResult = $this->getTestBus()->getTestForStudent($testId);
-        $viewData = [
-            'test' => $apiResult->test
-        ];
-        \Debugbar::info($viewData['test']);
-        return view('student.test.join', $viewData);
-    }
+
+
 
 
     public function about()
