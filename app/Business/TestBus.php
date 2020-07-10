@@ -39,7 +39,7 @@ class TestBus extends BaseBus
         return $this->getTestDAL()->getAll();
     }
 
-    public function getTest($testId)
+    public function getById($testId)
     {
         return $this->getTestDAL()->getById($testId);
     }
@@ -51,7 +51,7 @@ class TestBus extends BaseBus
 
     public function getTestForStudent($testId)
     {
-        $apiResult = $this->getTest($testId);
+        $apiResult = $this->getById($testId);
 
         foreach ($apiResult->test->questions as $question) {
             foreach ($question->choices as $choice) {

@@ -50,11 +50,11 @@
 	@csrf
 	<div class="form-group">
 	  <label for="name" class="font-weight-bold required">Tên đề thi:</label>
-	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia...">
+	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia..." value="{{ isset($test) ? $test->name : '' }}">
 	</div>
 	<div class="form-group">
 	  <label for="description">Ghi chú</label>
-	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An..."></textarea>
+	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An...">{{ isset($test) ? $test->description : '' }}</textarea>
 	</div>
 	<div class="d-flex justify-content-between">
 		<div class="form-group">
@@ -96,6 +96,33 @@
 				</tr>
 			</thead>
 			<tbody>
+				@if ($action == 'edit')
+					@php
+						$i = 0;
+					@endphp
+					@foreach ($test->questions as $question)
+					<tr>
+						<td class="order">{{ $i+1 }}</td>
+						<td>
+							<a class="picker text-success" href="javascript:void(0)" data-toggle="tooltip" title="Chọn câu hỏi"><i class="fas fa-crosshairs"></i></a>
+							<a class="info text-primary" href="javascript:void(0)" data-toggle="tooltip" title="Xem chi tiết câu hỏi"><i class="fas fa-info-circle"></i></a>
+							<a class="clear text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Loại câu hỏi khỏi danh sách"><i class="fas fa-times-circle ml-1"></i></a>
+						</td>
+						<td>
+							<input type="hidden" name="question_ids[${i}]" class="question-id" value="{{ $question->id }}">
+							<div class="content scrollable">
+								{!! htmlspecialchars_decode($question->content) !!}
+							</div>
+						</td>
+						<td class="grade">
+							{{ $question->grade_id }}
+						</td>
+					</tr>
+					@php
+						++$i;
+					@endphp
+					@endforeach	
+				@endif
 			</tbody>
 		</table>
 	</div>
@@ -109,27 +136,43 @@
 			@endif
 		</button>
 	</div>
-
-<div class="modal fade" id="question-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-		  ...
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  <button type="button" class="btn btn-primary">Save changes</button>
-		</div>
-	</div>
 </form>
 
-
+<div class="modal fade" id="question-detail" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết câu hỏi:</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+				<div class="question-wrapper">
+					<label>Nội dung câu hỏi:</label>
+					<div class="content">
+					</div>
+				</div>
+				<div class="choices-wrapper">
+					<label>Các lựa chọn:</label>
+					<div class="choices">
+						<ul class="list-group">
+							
+						</ul>
+					</div>
+				</div>
+				<div class="solution-wrapper">
+					<label>Đáp án:</label>
+					<div class="solution">
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="question-picker" tabindex="-1">
 	<div class="modal-dialog modal-dialog-centered modal-xl">
@@ -186,14 +229,11 @@
 
 @section('end')
 <script>
-	const pickQuestion = function (e) {
-
-	}
-
 	$(document).ready(function () {
 		let quantity = $('#quantity');
 		let qpicker = $('#question-picker');
 		let testForm = $('#test');
+		let qdetail = $('#question-detail');
 
 
 		quantity.on('change', function (e) {
@@ -220,48 +260,61 @@
 			}
 
 			$("#questions>tbody").html(questions);
+
+			testForm.find('.picker').on('click', function (e) {
+				e.preventDefault();
+
+				let row = $(this).parent().parent();
+				let rowOrder = row.find('.order').text();
+				qpicker.find('#selected-row').val(rowOrder);
+				qpicker.find('input[name="question_id"]:checked').prop('checked', false);
+
+				qpicker.modal('show');
+			});
+
+			testForm.find('.clear').on('click', function (e) {
+				e.preventDefault();
+
+				let row = $(this).parent().parent();
+				row.find('.content').html('');
+			});
+
+			testForm.find('.info').on('click', function (e) { 
+				e.preventDefault();
+
+				let row = $(this).parent().parent();
+
+				let question_id = row.find('.question-id').val();
+				if (question_id) {
+					$.ajax({
+						type: "get",
+						url: "{{ route('teacher.question.get', '', false) }}"+`/${question_id}`,
+						dataType: "json",
+						success: function (response) {
+							console.log(response);
+							if (response['return_code']) {
+								let jqcontent = qdetail.find('.modal-body');
+								jqcontent.find('.content').html(response['question']['content']);
+								let strChoices = '';
+								response['question']['choices'].forEach(choice => {
+									strChoices += `<li class="list-group-item">${choice['content']}</li>\n`;
+								});
+								jqcontent.find('.choices>ul').html(strChoices);
+								jqcontent.find('.solution').html(response['question']['solution']);
+
+								qdetail.modal('show');
+							}
+						}
+					});
+				}
+				
+			});
 		});
 
 		@if ($action == 'create')
 			quantity.trigger('change');
 		@endif
 
-		testForm.find('.picker').on('click', function (e) {
-			e.preventDefault();
-
-			let row = $(this).parent().parent();
-			let rowOrder = row.find('.order').text();
-			qpicker.find('#selected-row').val(rowOrder);
-			qpicker.find('input[name="question_id"]:checked').prop('checked', false);
-
-			qpicker.modal('show');
-		});
-
-		testForm.find('.clear').on('click', function (e) {
-			e.preventDefault();
-
-			let row = $(this).parent().parent();
-			row.find('.content').html('');
-		});
-
-		testForm.find('.info').on('click', function (e) { 
-			e.preventDefault();
-
-			let row = $(this).parent().parent();
-
-			let question_id = row.find('.question-id').val();
-			if (question_id) {
-				$.ajax({
-					type: "get",
-					url: "{{ route('teacher.question.get', '', false) }}"+`/${question_id}`,
-					dataType: "json",
-					success: function (response) {
-						console.log(response);
-					}
-				});
-			}
-			
-		})
 
 		testForm.submit(function (e) {
 			e.preventDefault();
@@ -283,14 +336,14 @@
 							window.location.reload();
 						}
 						@else
-							close();
+							console.log('ok');
 						@endif
 					} else {
 						alert("Thêm đề thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại đề.")
 					}
 				}
 			});
-		})
+		});
 
 		qpicker.find('#choose').on('click', function (e) {
 			let rowOrder = parseInt(qpicker.find('#selected-row').val());
@@ -308,7 +361,7 @@
 
 		qpicker.find('.question-row').on('click', function (e) {
 			$(this).find('input[type="radio"]').prop('checked', true);
-		})
+		});
 	});
 
 </script>
