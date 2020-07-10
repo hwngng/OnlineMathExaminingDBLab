@@ -89,7 +89,7 @@
 
                         <td>
                             <span class="table-reset">
-                                <button type="button" class="btn btn-primary btn-rounded btn-sm my-0 table-reset-btn">
+                                <button type="button" class="btn btn-primary btn-rounded btn-sm my-0 table-reset-btn disable">
                                     <i class="fas fa-key" aria-hidden="true"></i>
                                 </button>
                             </span>

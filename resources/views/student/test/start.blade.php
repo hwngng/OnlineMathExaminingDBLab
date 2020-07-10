@@ -22,16 +22,7 @@
 <!-- perimeter = 2 * PI * radius -->
 <!-- perimeter = 2 * PI * 190 = 1193.80 -->
 
-<div class="container timer">
-    <svg width="400" height="400">
-        <circle r="190" cx="200" cy="200" stroke="green" stroke-width="15" fill="white"
-            transform="rotate(-90 200 200)" />
-    </svg>
-    <div class="timer-container">
-        <input id="duration" value="{{ 60 * $test->duration }}" disabled>
-    </div>
-
-</div>
+<button class="timer btn btn-primary disabled" id="time">{{ $test->remain }}</button></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -111,6 +102,13 @@
 @section('end')
 <script src="{{ asset('js/doing-test.js') }}"></script>
 <script>
+    @if($test->remain == 0 )
+
+    //TODO: redirect to result window
+
+    window.location.assign('{{ route('student.test.result', Auth:: user() -> id) }}');
+    @endif
+
     const notify = (msg, type) => {
         $('#message').addClass(`alert-${type}`);
         $('#message').html(`<strong> ${msg} </strong>`);
@@ -119,6 +117,45 @@
         $('#message').fadeToggle(500);
 
     };
+
+    const second = 1000;
+
+
+
+
+
+    let countDown = new Date('{{ $test->remain }}').getTime();
+
+    window.onload = function () {
+        display = document.querySelector('#time');
+        startTimer( {{ $test->remainInSecond }} , display);
+    };
+    $('#test-submit').click(function () {
+        getAllTestResult();
+    })
+    function startTimer(duration, element) {
+        let timer = duration, minutes, seconds;
+        let x = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            element.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(x);
+                getAllTestResult();
+        }
+    }, second);
+}
+
+
+
+
+
+
+
 
     let getAllTestResult = () => {
         let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -148,8 +185,8 @@
             url: '{{ route('student.test.finish') }}',
             data: data,
             success: function () {
-                notify('sent', 'success');
-                // window.location.assign('{{ route('student.test.result', Auth:: user() -> id) }}');
+                notify('Nộp bài thành công', 'success');
+                window.location.replace('{{ route('student.test.result',[Auth::id(),$test->id])}}');
             }
         });
     }
@@ -180,9 +217,7 @@
 
 
 
-    $('#test-submit').click(function () {
-        getAllTestResult();
-    })
+
 
 </script>
 

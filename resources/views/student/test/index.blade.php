@@ -45,7 +45,7 @@
                         <td>{{ $test->grade_id }}</td>
                         <td>{{ $test->no_of_questions }}</td>
                         <td>{{ $test->duration }}</td>
-                        <td>{{ $test->createdBy->username }}</td>
+                        <td>{{ $test->createdBy->first_name }}</td>
                         <td>{{ $test->created_at }}</td>
                         <td>{{ $test->description }}</td>
                         <td>

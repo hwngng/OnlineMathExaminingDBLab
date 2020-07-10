@@ -51,6 +51,30 @@ class WorkHistoryDAL extends BaseDAL
 
         return $ret;
     }
+    public function getByTestIdAndUserId($userId,$testId)
+    {
+        $ret = new ApiResult();
+        $workHistory = WorkHistory::select(
+            'id',
+            'user_id',
+            'test_id',
+            'no_of_correct',
+            'started_at',
+            'ended_at',
+            'submitted_at'
+        )
+            ->where([
+                ['test_id', '=', $testId],
+                ['user_id', '=', $userId],
+            ])
+            ->first();
+        $ret->workHistory = $workHistory;
+
+        return $ret;
+    }
+
+
+
 
     public function insert($workHistory)
     {
@@ -58,14 +82,14 @@ class WorkHistoryDAL extends BaseDAL
 
         $ret = new ApiResult();
 
-        $workHistoryORM = new WorkHistory();
-
-        $workHistoryORM->user_id = Auth::id();
-        $workHistoryORM->test_id = $workHistory['test_id'];
+        $workHistoryORM = WorkHistory::updateOrCreate(
+            ['test_id' => +$workHistory['test_id']],
+            ['user_id' => Auth::id()]
+        );
 
 
         // $workHistoryORM->started_at = $workHistory['started_at'];
-        // $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
+        $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
         // $workHistoryORM->ended_at = $workHistory['ended_at'];
 
 
@@ -74,18 +98,8 @@ class WorkHistoryDAL extends BaseDAL
 
         $result = $workHistoryORM->save();
 
-
-        //TODO: add to pivot table
-        $historyDetails = array();
-        for ($i = 0; $i < $workHistory['length']; $i++) {
-            $qid = $workHistory['question_id'][$i];
-            $cids = ['choice_ids' => $workHistory['choice_ids'][$i]];
-
-            $historyDetails += [$qid => $cids];
-        }
-
         $workHistoryORM->questions()
-            ->attach($historyDetails);
+            ->syncWithoutDetaching($workHistory['history_details']);
 
 
 
@@ -105,16 +119,14 @@ class WorkHistoryDAL extends BaseDAL
 
         $ret = new ApiResult();
 
-        $workHistoryORM = new WorkHistory();
 
-        $workHistoryORM->user_id = Auth::id();
-        $workHistoryORM->test_id = $testId;
+        $workHistoryORM = WorkHistory::updateOrCreate(
+            ['test_id' => +$testId],
+            ['user_id' => Auth::id()]
+        );
 
 
         // $workHistoryORM->started_at = $workHistory['started_at'];
-        // $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
-        // $workHistoryORM->ended_at = $workHistory['ended_at'];
-
 
 
         $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
@@ -123,8 +135,12 @@ class WorkHistoryDAL extends BaseDAL
 
         $qid = $workHistory['question_id'];
         $cids = ['choice_ids' => $workHistory['choice_ids']];
+
+        // if ( $workHistoryORM->questions->contains($qid)) {
+        //     $workHistoryORM->questions()->save();
+        // }
         $workHistoryORM->questions()
-            ->attach([$qid => $cids]);
+        ->syncWithoutDetaching([$qid => $cids]);
 
         if ($result) {
             $ret->fill('0', 'Success');

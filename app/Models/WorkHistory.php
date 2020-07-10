@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class WorkHistory extends Model
 {
     protected $table = 'work_history';
+    protected $fillable = ['test_id','user_id'];
     public $timestamps = false;
 
     public function user ()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
-    
+
     public function questions ()
     {
         return $this->belongsToMany('App\Models\Question', 'work_history_detail', 'work_history_id', 'question_id');
