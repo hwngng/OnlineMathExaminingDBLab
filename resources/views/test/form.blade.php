@@ -43,6 +43,9 @@
 			height: 80vh;
 			overflow-y: auto;
 		}
+		strong {
+			font-weight: normal;
+		}
 	</style>
 @endsection
 
