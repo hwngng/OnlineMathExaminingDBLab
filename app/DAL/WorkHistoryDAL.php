@@ -137,19 +137,15 @@ class WorkHistoryDAL extends BaseDAL
     {
 
 
-        $ret = new ApiResult();
+        $workHistoryORM = WorkHistory::where('user_id', Auth::id())
+            ->where('test_id', +$workHistory['test_id'])
+            ->first();
 
-
-        $workHistoryORM = WorkHistory::updateOrCreate(
-            ['test_id' => +$testId],
-            ['user_id' => Auth::id()]
-        );
-
-
-        // $workHistoryORM->started_at = $workHistory['started_at'];
-
-
-        $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
+        if (is_null($workHistoryORM)) {
+            $workHistoryORM = new WorkHistory();
+            $workHistoryORM->test_id = +$workHistory['test_id'];
+            $workHistoryORM->user_id = Auth::id();
+        };
 
         $result = $workHistoryORM->save();
 
