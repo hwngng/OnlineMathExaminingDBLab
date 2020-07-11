@@ -9,7 +9,7 @@
     @csrf
 	<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
     <div class="form-group">
-		<label for="grade_id" class="font-weight-bold">Lớp: </label>
+		<label for="grade_id" class="font-weight-bold" style="margin-top: 20px">Lớp: </label>
 		<select name="grade_id" id="grade">
 			@foreach ($grades as $grade)
 				<option value="{{ $grade->id }}" {{ isset($question) && $question->grade_id == $grade->id ? 'selected' : '' }}>{{ $grade->id }}</option>
