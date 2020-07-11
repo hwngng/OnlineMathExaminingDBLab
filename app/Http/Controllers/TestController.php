@@ -71,7 +71,19 @@ class TestController extends Controller
 
     public function edit ($testId)
     {
-    
+        $apiResultTestBus = $this->getTestBus()->getById($testId);
+        $apiResultGradeBus = $this->getGradeBus()->getAllId();
+        $apiResultQuestionBus = $this->getQuestionBus()->getAll();
+
+        $viewData = [
+            'test' => $apiResultTestBus->test,
+            'grades' => $apiResultGradeBus->grades,
+            'durations' => [5, 10, 15, 20, 25, 30, 45, 60, 90],
+            'quantity' => [5, 10, 12, 15, 20, 30, 35, 40, 45, 50, 60],
+            'questions' => $apiResultQuestionBus->questions
+        ];
+
+        return view('test.edit', $viewData);
     }
 
     public function update (TestRequest $testRequest)

@@ -16,6 +16,8 @@ class QuestionDAL extends BaseDAL
 									'content',
 									'grade_id')
 							->get();
+		
+		$ret->fill(count($questions), '');
 		$ret->questions = $questions;
 
 		return $ret;
@@ -31,6 +33,14 @@ class QuestionDAL extends BaseDAL
 							->where('id', $id)
 							->with('choices:id,question_id,content,is_solution')
 							->first();
+		if (count((array) $question) > 0)
+		{
+			$ret->fill(1, '');
+		}
+		else
+		{
+			$ret->fill(0, 'No question found.');
+		}
 		$ret->question = $question;
 		return $ret;
 	}

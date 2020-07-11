@@ -32,6 +32,9 @@
     .action-header {
         width: 10%;
     }
+    strong {
+	font-weight: normal;
+}
 
 </style>
 @endsection

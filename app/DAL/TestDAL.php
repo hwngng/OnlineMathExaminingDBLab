@@ -38,30 +38,30 @@ class TestDAL extends BaseDAL
     {
         $ret = new ApiResult();
         $test = Test::select(
-            'id',
-            'code',
-            'name',
-            'grade_id',
-            'duration',
-            'description',
-            'no_of_questions',
-            'created_at',
-            'created_by'
-        )
-            ->where('id', $id)
-            ->with('createdBy:id,username,first_name,last_name')
-            ->first();
+                        'id',
+                        'code',
+                        'name',
+                        'grade_id',
+                        'duration',
+                        'description',
+                        'no_of_questions',
+                        'created_at',
+                        'created_by'
+                    )
+                    ->where('id', $id)
+                    ->with('createdBy:id,username,first_name,last_name')
+                    ->first();
         $ret->test = $test;
 
         $testContents = TestContent::select(
-            'test_id',
-            'test_code',
-            'question_id'
-        )
-            ->where('test_id', $id)
-            ->where('test_code', $code)
-            ->with('question.choices')
-            ->get();
+                                        'test_id',
+                                        'test_code',
+                                        'question_id'
+                                    )
+                                    ->where('test_id', $id)
+                                    ->where('test_code', $code)
+                                    ->with('question.choices')
+                                    ->get();
         $questions = [];
         foreach ($testContents as $testContent) {
             $questions[] = $testContent->question;

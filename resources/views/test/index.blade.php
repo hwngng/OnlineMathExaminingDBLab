@@ -83,7 +83,7 @@
 				            <td>{{ $test->created_at }}</td>
 				            <td>{{ $test->description }}</td>
 				            <td>
-				                <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-edit"></i></a>
+				                <a class="btn btn-primary btn-sm" href="{{ route('teacher.test.edit', $test->id) }}" target="_blank"><i class="fas fa-edit"></i></a>
 				                <a class="btn btn-danger btn-sm" href="#"><i class="fas fa-trash"></i></a>
 				            </td>
 				        </tr>
