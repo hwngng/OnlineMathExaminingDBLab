@@ -85,7 +85,7 @@ class WorkHistoryDAL extends BaseDAL
             'ended_at',
             'submitted_at'
         )->where('test_id', '=', $testId)
-        ->get();
+            ->get();
         $ret->workHistories = $workHistories;
 
         return $ret;
@@ -136,14 +136,17 @@ class WorkHistoryDAL extends BaseDAL
     public function insertAnAnswer($workHistory, $testId)
     {
         $ret = new ApiResult();
+<<<<<<< HEAD
 
+=======
+>>>>>>> bbfd5bf4020a4da025cbf3bb9005de87ff31d3bd
         $workHistoryORM = WorkHistory::where('user_id', Auth::id())
-            ->where('test_id', +$workHistory['test_id'])
+            ->where('test_id', +$testId)
             ->first();
 
         if (is_null($workHistoryORM)) {
             $workHistoryORM = new WorkHistory();
-            $workHistoryORM->test_id = +$workHistory['test_id'];
+            $workHistoryORM->test_id = +$testId;
             $workHistoryORM->user_id = Auth::id();
         };
 
