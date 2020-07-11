@@ -50,6 +50,10 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('edit')->get('/edit/{id}', 'TestController@edit')->middleware('authorize:teacher');
                 Route::name('update')->post('/update', 'TestController@update')->middleware('authorize:teacher');
             });
+            Route::name('result.')->prefix('result')->group(function () {
+                Route::name('list')->get('/', 'WorkHistoryController@showAllTestResult')->middleware('authorize:teacher');
+                Route::name('detail')->get('/result/{testId}', 'WorkHistoryController@getStudentResultByTestId')->middleware('authorize:teacher');
+            });
         });
 
     Route::name('admin.')
@@ -78,7 +82,6 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('update')->post('/update/{id}', 'WorkHistoryController@updateTestResult')->middleware('authorize:student');
                 Route::name('finish')->post('/finish', 'WorkHistoryController@completeTest')->middleware('authorize:student');
                 Route::name('result')->get('/result/{userId}/{testId}', 'WorkHistoryController@getResultByTestIdAnduserId')->middleware('authorize:student');
-
             });
         });
 });

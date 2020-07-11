@@ -51,7 +51,7 @@ class WorkHistoryDAL extends BaseDAL
 
         return $ret;
     }
-    public function getByTestIdAndUserId($userId,$testId)
+    public function getByTestIdAndUserId($userId, $testId)
     {
         $ret = new ApiResult();
         $workHistory = WorkHistory::select(
@@ -73,30 +73,50 @@ class WorkHistoryDAL extends BaseDAL
         return $ret;
     }
 
+    public function getByTestId($testId)
+    {
+        $ret = new ApiResult();
+        $workHistories = WorkHistory::select(
+            'id',
+            'user_id',
+            'test_id',
+            'no_of_correct',
+            'started_at',
+            'ended_at',
+            'submitted_at'
+        )->where('test_id', '=', $testId)
+        ->get();
+        $ret->workHistories = $workHistories;
+
+        return $ret;
+    }
 
 
 
     public function insert($workHistory)
     {
-
-
         $ret = new ApiResult();
 
-        $workHistoryORM = WorkHistory::updateOrCreate(
-            ['test_id' => +$workHistory['test_id']],
-            ['user_id' => Auth::id()]
-        );
 
+        $workHistoryORM = WorkHistory::where('user_id', Auth::id())
+            ->where('test_id', +$workHistory['test_id'])
+            ->first();
 
-        // $workHistoryORM->started_at = $workHistory['started_at'];
+        if (is_null($workHistoryORM)) {
+            $workHistoryORM = new WorkHistory();
+            $workHistoryORM->test_id = +$workHistory['test_id'];
+            $workHistoryORM->user_id = Auth::id();
+        };
+
         $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
+        $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
+        // $workHistoryORM->started_at = $workHistory['started_at'];
         // $workHistoryORM->ended_at = $workHistory['ended_at'];
 
 
-
-        $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
-
         $result = $workHistoryORM->save();
+
+
 
         $workHistoryORM->questions()
             ->syncWithoutDetaching($workHistory['history_details']);
@@ -140,7 +160,7 @@ class WorkHistoryDAL extends BaseDAL
         //     $workHistoryORM->questions()->save();
         // }
         $workHistoryORM->questions()
-        ->syncWithoutDetaching([$qid => $cids]);
+            ->syncWithoutDetaching([$qid => $cids]);
 
         if ($result) {
             $ret->fill('0', 'Success');

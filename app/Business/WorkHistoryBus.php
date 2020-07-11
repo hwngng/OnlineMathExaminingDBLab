@@ -7,7 +7,7 @@ use App\DAL\WorkHistoryDAL;
 use App\Business\QuestionBus;
 use App\Business\UserBus;
 use App\Business\TestBus;
-
+use App\Models\WorkHistory;
 
 class WorkHistoryBus extends BaseBus
 {
@@ -52,7 +52,32 @@ class WorkHistoryBus extends BaseBus
 
     public function getAll()
     {
-        return $this->getWorkHistoryDAL()->getAll();
+        $apiResult = $this->getWorkHistoryDAL()->getAll();
+        $testBus = new TestBus();
+        $userBus = new UserBus();
+
+        foreach ($apiResult->workHistories as $workHistory) {
+            $workHistory->test = $testBus->getInfoOnly(+$workHistory->test_id)->test;
+            $workHistory->user = $userBus->getById(+$workHistory->userId)->user;
+        }
+
+        return $apiResult;
+    }
+
+
+    public function getAllByTestId($testId)
+    {
+        $apiResult = $this->getWorkHistoryDAL()->getByTestId($testId);
+        $testBus = new TestBus();
+        $userBus = new UserBus();
+        $apiResult->no_of_questions = $testBus->getInfoOnly(+$testId)->test->no_of_questions;
+        $apiResult->test_name = $testBus->getInfoOnly(+$testId)->test->name;
+
+        foreach ($apiResult->workHistories as $workHistory) {
+            $workHistory->user = $userBus->getById(+$workHistory->user_id)->user;
+        }
+
+        return $apiResult;
     }
 
     public function getWorkHistory($id)
@@ -60,9 +85,9 @@ class WorkHistoryBus extends BaseBus
         return $this->getWorkHistoryDAL()->getById($id);
     }
 
-    public function getWorkHistoryByTestIdAndUserId($userId,$testId)
+    public function getWorkHistoryByTestIdAndUserId($userId, $testId)
     {
-        $apiResult = $this->getWorkHistoryDAL()->getByTestIdAndUserId($userId,$testId);
+        $apiResult = $this->getWorkHistoryDAL()->getByTestIdAndUserId($userId, $testId);
         $testBus = new TestBus();
         $userBus = new UserBus();
         $apiResult->test = $testBus->getInfoOnly(+$testId)->test;
