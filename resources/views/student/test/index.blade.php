@@ -17,7 +17,7 @@
 @section('content')
 <div class="container">
     <div class="align-content-center">
-        <h3 class="title text-center mb-3"> Available test </h3>
+        <h3 class="title text-center mb-3"> Danh sách bài thi </h3>
         <div class="">
             <table class="table">
                 <thead>

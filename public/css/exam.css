@@ -1,3 +1,8 @@
+body {
+    background-color: beige;
+}
+
+
 .tick::before {
     content: '✓';
     color: green;
@@ -10,7 +15,7 @@
 .timer {
     display: block;
     position: fixed;
-    top :10px;
+    top: 10px;
     z-index: 9999;
     font-weight: bold;
     right: 50%;
@@ -135,10 +140,12 @@ svg {
         border-right: 1px solid #eee;
         width: 250px;
     }
+
     .main {
         padding-right: 40px;
         padding-left: 300px;
     }
+
     .timer {
         right: 3px;
         transform: translateX(0);
