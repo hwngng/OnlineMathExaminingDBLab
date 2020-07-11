@@ -71,6 +71,27 @@ class TestDAL extends BaseDAL
         return $ret;
     }
 
+    public function getAllInfo()
+    {
+        $ret = new ApiResult();
+        $tests = Test::select(
+            'id',
+            'code',
+            'name',
+            'grade_id',
+            'duration',
+            'description',
+            'no_of_questions',
+            'created_at',
+            'created_by'
+        )->get();
+        $ret->tests = $tests;
+        return $ret;
+    }
+
+
+
+
     public function getInfoOnly($id, $code = 0)
     {
         $ret = new ApiResult();
@@ -85,7 +106,7 @@ class TestDAL extends BaseDAL
             'created_at',
             'created_by'
         )->where('id', $id)
-        ->first();
+            ->first();
         $ret->test = $test;
         return $ret;
     }

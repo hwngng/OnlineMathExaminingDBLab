@@ -49,6 +49,11 @@ class TestBus extends BaseBus
         return $this->getTestDAL()->getInfoOnly($testId);
     }
 
+    public function getAllInfo()
+    {
+        return $this->getTestDAL()->getAllInfo();
+    }
+
     public function getTestForStudent($testId)
     {
         $apiResult = $this->getById($testId);
