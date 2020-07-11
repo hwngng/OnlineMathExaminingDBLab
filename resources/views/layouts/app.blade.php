@@ -50,8 +50,16 @@
                         @else
                         @can('be-admin')
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('admin.index') }} --}}">Quản Trị
+                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('admin.index') }} --}}"
+                                data-toggle="dropdown">Quản Trị
                                 Viên</a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{{  route('admin.user.list') }}">
+                                    Danh sách thành viên
+                                </a>
+                            </div>
+
                         </li>
                         @yield('dropdown-admin')
                         @endcan
@@ -75,7 +83,7 @@
                             <a class="nav-link dropdown-toggle" href="{{-- {{ route('student.index') }} --}}"
                                 data-toggle="dropdown">Học Sinh</a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{{ route('student.index') }}">Available test</a>
+                                <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
                                 <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ Sơ</a>
                             </div>
                         </li>

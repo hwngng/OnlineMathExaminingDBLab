@@ -18142,13 +18142,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-var notify = function notify(msg, type) {
-  $('#message').addClass("alert-".concat(type));
-  $('#message').html("<strong> ".concat(msg, " </strong>"));
-  $('#message').removeClass('fade');
-  $('#message').delay(500);
-  $('#message').fadeToggle(500);
-};
+
 
 /***/ }),
 

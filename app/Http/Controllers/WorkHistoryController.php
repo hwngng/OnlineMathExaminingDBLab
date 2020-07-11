@@ -123,7 +123,6 @@ class WorkHistoryController extends Controller
             'workHistories' => $apiResult->workHistories,
             'no_of_questions' => $apiResult->no_of_questions,
         ];
-        \Debugbar::info($viewData);
         return view('teacher.result.detail', $viewData);
     }
 }
