@@ -136,8 +136,6 @@ class WorkHistoryDAL extends BaseDAL
     public function insertAnAnswer($workHistory, $testId)
     {
         $ret = new ApiResult();
-
-
         $workHistoryORM = WorkHistory::where('user_id', Auth::id())
             ->where('test_id', +$workHistory['test_id'])
             ->first();
