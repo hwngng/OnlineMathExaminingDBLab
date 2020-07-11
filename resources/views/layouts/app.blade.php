@@ -52,6 +52,13 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="{{-- {{ route('admin.index') }} --}}">Quản Trị
                                 Viên</a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{{  route('admin.user.list') }}">
+                                    Danh sách thành viên
+                                </a>
+                            </div>
+
                         </li>
                         @yield('dropdown-admin')
                         @endcan
