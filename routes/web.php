@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('about')->get('/about/{id}', 'StudentController@about');
             Route::name('test.')->prefix('test')->group(function () {
                 Route::name('list')->get('/list', 'StudentController@getAllAvailableTests');
-                Route::name('start')->get('/{id}', 'WorkHistoryController@getTest')->middleware('authorize:student');
+                Route::name('start')->get('/{id}', 'WorkHistoryController@startTest')->middleware('authorize:student');
                 Route::name('update')->post('/update/{id}', 'WorkHistoryController@updateTestResult')->middleware('authorize:student');
                 Route::name('finish')->post('/finish', 'WorkHistoryController@completeTest')->middleware('authorize:student');
                 Route::name('result')->get('/result/{userId}/{testId}', 'WorkHistoryController@getResultByTestIdAnduserId')->middleware('authorize:student');

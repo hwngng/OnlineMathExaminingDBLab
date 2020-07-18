@@ -39,6 +39,7 @@ class WorkHistoryBus extends BaseBus
 
         $resultForm['history_details'] = $historyDetails;
 
+        $resultForm['submitted_at'] = now();
         $apiResult =  $this->getWorkHistoryDAL()->insert($resultForm);
         return $apiResult;
     }
@@ -48,6 +49,14 @@ class WorkHistoryBus extends BaseBus
         $apiResult = new ApiResult();
         $apiResult =  $this->getWorkHistoryDAL()->insertAnAnswer($resultForm, $testId);
         return $apiResult;
+    }
+
+
+    public function startHistory($testId,$userId,$startTime) {
+        $apiResult = new ApiResult();
+        $apiResult =  $this->getWorkHistoryDAL()->initialHistory($testId, $userId,$startTime);
+        return $apiResult;
+
     }
 
     public function getAll()

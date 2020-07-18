@@ -17,6 +17,13 @@ class WorkHistoryController extends Controller
     private $workHistoryBus;
     private $testBus;
 
+
+    public function __construct()
+    {
+        $this->workHistoryBus = $this->getWorkHistoryBus();
+        $this->testBus = $this->getTestBus();
+    }
+
     private function getTestBus()
     {
         if ($this->testBus == null) {
@@ -53,35 +60,47 @@ class WorkHistoryController extends Controller
     }
 
 
-    public function getTest(TestRequest $request, $testId)
+    public function startTest($testId)
     {
         $apiResult = $this->getTestBus()->getTestForStudent($testId);
+        $historyBus = $this->getWorkHistoryBus();
+
+
+
+
+        $currentHistory = $historyBus->getWorkHistoryByTestIdAndUserId(Auth::id(), $testId)->workHistory;
+
+        \Debugbar::info($currentHistory);
+
+
+        if (is_null($currentHistory) || is_null($currentHistory->started_at)) {
+            $apiHistoryResult = $historyBus->startHistory($testId, Auth::id(), now());
+            $apiResult->test->remain = gmdate("i:s", $apiResult->test->duration * 60);
+            $apiResult->test->remainInSecond = $apiResult->test->duration * 60;
+        } else {
+
+            $remainInSecond = $apiResult->test->duration * 60 - now()->diffInSeconds($currentHistory->started_at);
+
+            \Debugbar::info($remainInSecond);
+
+            if (
+                $remainInSecond < 0
+                || !is_null($currentHistory->ended_at)
+                || !is_null($currentHistory->submitted_at)
+            ) {
+                return view('student.test.notavailable', ['test_id' => $testId]);
+            }
+
+            $remainingTime =  gmdate("i:s", $remainInSecond);
+            $apiResult->test->remainInSecond = $remainInSecond;
+
+
+            $apiResult->test->remain = $remainingTime;
+        }
+
         $viewData = [
             'test' => $apiResult->test
         ];
-
-        if (!$request->session()->has('test_state')) {
-            $request->session()->put('test_remaining_time', $viewData['test']->duration * 60);
-            $request->session()->put('test_state', $testId);
-            $request->session()->put('start_at', now());
-            $viewData['test']->remain = $viewData['test']->duration;
-            $viewData['test']->remain = gmdate("i:s", $viewData['test']->duration * 60);
-            $viewData['test']->remainInSecond = $viewData['test']->duration * 60;
-        } else {
-            $startTime = $request->session()->get('start_at');
-            $tmp = $viewData['test']->duration * 60 - now()->diffInSeconds($startTime);
-
-            if ($tmp < 0 || $request->session()->get('test_state') == 'finish') {
-                return view('student.test.notavailable', $viewData);
-            }
-
-            $remainingTime =  gmdate("i:s", $tmp);
-            $viewData['test']->remain = $remainingTime;
-            $viewData['test']->remainInSecond = $tmp;
-
-            $request->session()->put('test_remaining_time', $tmp);
-        }
-
         return view('student.test.start', $viewData);
     }
 
@@ -94,10 +113,9 @@ class WorkHistoryController extends Controller
 
     public function completeTest(WorkHistoryRequest $request)
     {
+
         $apiResult = $this->getWorkHistoryBus()->insertATestResult($request);
 
-        $request->session()->put('test_state', 'finish');
-        $request->session()->forget(['test_remaining_time', 'start_at']);
 
         return response()->json($apiResult->report());
     }

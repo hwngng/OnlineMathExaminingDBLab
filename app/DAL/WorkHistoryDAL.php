@@ -91,7 +91,30 @@ class WorkHistoryDAL extends BaseDAL
         return $ret;
     }
 
+    public function initialHistory($testId, $userId, $startTime)
+    {
+        $ret = new ApiResult();
+        $workHistoryORM = WorkHistory::where('user_id', Auth::id())
+            ->where('test_id', +$testId)
+            ->first();
 
+        if (is_null($workHistoryORM)) {
+            $workHistoryORM = new WorkHistory();
+            $workHistoryORM->test_id = +$testId;
+            $workHistoryORM->user_id = +$userId;
+        };
+
+        $workHistoryORM->started_at = $startTime;
+
+        $result = $workHistoryORM->save();
+
+        if ($result) {
+            $ret->fill('0', 'Success');
+            $ret->workHistoryId = $workHistoryORM->id;
+        } else
+            $ret->fill('1', 'Cannot insert, database error.');
+        return $ret;
+    }
 
     public function insert($workHistory)
     {
@@ -110,8 +133,7 @@ class WorkHistoryDAL extends BaseDAL
 
         $workHistoryORM->no_of_correct = $workHistory['no_of_correct'];
         $workHistoryORM->submitted_at = date("Y-m-d H:i:s");
-        // $workHistoryORM->started_at = $workHistory['started_at'];
-        // $workHistoryORM->ended_at = $workHistory['ended_at'];
+        $workHistoryORM->ended_at = $workHistory['ended_at'];
 
 
         $result = $workHistoryORM->save();
