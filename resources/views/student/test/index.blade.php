@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '- Đề thi')
+@section('title', 'Danh sách bài thi')
 
 @section('header')
 <script type="text/x-mathjax-config">

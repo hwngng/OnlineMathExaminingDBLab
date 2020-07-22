@@ -70,7 +70,6 @@ class WorkHistoryController extends Controller
 
         $currentHistory = $historyBus->getWorkHistoryByTestIdAndUserId(Auth::id(), $testId)->workHistory;
 
-        \Debugbar::info($currentHistory);
 
 
         if (is_null($currentHistory) || is_null($currentHistory->started_at)) {
@@ -80,9 +79,6 @@ class WorkHistoryController extends Controller
         } else {
 
             $remainInSecond = $apiResult->test->duration * 60 - now()->diffInSeconds($currentHistory->started_at);
-
-            \Debugbar::info($remainInSecond);
-
             if (
                 $remainInSecond < 0
                 || !is_null($currentHistory->ended_at)

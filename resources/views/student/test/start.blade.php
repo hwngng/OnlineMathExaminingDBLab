@@ -103,9 +103,6 @@
 <script src="{{ asset('js/doing-test.js') }}"></script>
 <script>
     @if($test->remain == 0 )
-
-    //TODO: redirect to result window
-
     window.location.assign('{{ route('student.test.result', Auth:: user() -> id) }}');
     @endif
 

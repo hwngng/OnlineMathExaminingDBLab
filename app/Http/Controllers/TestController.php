@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Business\TestBus;
 use App\Business\GradeBus;
 use Illuminate\Http\Request;
@@ -41,6 +42,11 @@ class TestController extends Controller
     public function index ()
     {
         $apiResult = $this->getTestBus()->getAll();
+
+        foreach ($$apiResult->tests as $test) {
+            $test->created_at = Carbon::parse($test->created_at)->diffForHumans();
+        }
+
         $viewData = [
             'tests' => $apiResult->tests,
         ];
@@ -65,7 +71,7 @@ class TestController extends Controller
     public function store (TestRequest $testRequest)
     {
         $apiResult = $this->getTestBus()->insert($testRequest);
-        
+
         return response()->json($apiResult->report());
     }
 
@@ -88,6 +94,6 @@ class TestController extends Controller
 
     public function update (TestRequest $testRequest)
     {
-        
+
     }
 }

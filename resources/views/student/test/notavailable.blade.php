@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kết quả của $user->first_name')
+@section('title')
 
 @section('dropdown-student')
 

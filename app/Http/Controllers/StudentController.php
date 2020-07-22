@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use DebugBar\DebugBar;
 use App\Business\TestBus;
 use App\Business\GradeBus;
 use Illuminate\Http\Request;
@@ -9,7 +11,6 @@ use App\Business\QuestionBus;
 use App\Business\WorkHistoryBus;
 use App\Http\Requests\TestRequest;
 use App\Http\Requests\UserRequest;
-use DebugBar\DebugBar;
 
 class StudentController extends Controller
 {
@@ -41,16 +42,17 @@ class StudentController extends Controller
     public function index(TestRequest $request)
     {
         return $this->getAllAvailableTests($request);
-        // return redirect()->route('student.test.list');
     }
 
     public function getAllAvailableTests(TestRequest $request)
     {
         $apiResult = $this->getTestBus()->getAll();
+        foreach ($apiResult->tests as $test) {
+            $test->created_at = Carbon::parse($test->created_at)->diffForHumans();
+        }
         $viewData = [
             'tests' => $apiResult->tests,
         ];
-        \Debugbar::info($request->session());
         return view('student.test.index', $viewData);
     }
 

@@ -3,15 +3,16 @@
 
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
+        <title>{{ config('app.name', 'Math') }} @yield('title')</title>
 
         <link href="{{ asset("css/app.css") }}" rel="stylesheet">
         <link href="{{ asset("css/common.css") }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&display=swap" rel="stylesheet">
         @yield('header')
     </head>
 
@@ -21,7 +22,10 @@
             </div>
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img src="https://img.icons8.com/color/48/000000/multiple-choice.png"/>
+                    <span>
+                        {{ config('app.name', 'Toán') }}
+                    </span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -114,9 +118,12 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-5">
             @yield('content')
         </main>
+        <footer>
+            @yield('footer')
+        </footer>
     </body>
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
