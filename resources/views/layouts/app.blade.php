@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Math') }} @yield('title')</title>
+        <title>@yield('title')</title>
 
         <link href="{{ asset("css/app.css") }}" rel="stylesheet">
         <link href="{{ asset("css/common.css") }}" rel="stylesheet">
@@ -17,12 +17,12 @@
     </head>
 
     <body class="pt-5">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
             <div class="alert alert-success fade text-center fixed-top" role="alert" id="message">
             </div>
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="https://img.icons8.com/color/48/000000/multiple-choice.png"/>
+                    <img src="https://img.icons8.com/color/48/000000/multiple-choice.png" />
                     <span>
                         {{ config('app.name', 'Toán') }}
                     </span>
@@ -82,18 +82,6 @@
                         @yield('dropdown-teacher')
                         @endcan
 
-                        @can('be-student')
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{-- {{ route('student.index') }} --}}"
-                                data-toggle="dropdown">Học Sinh</a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
-                                <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ Sơ</a>
-                            </div>
-                        </li>
-                        @yield('dropdown-student')
-                        @endcan
-
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -101,6 +89,14 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @can('be-student')
+
+                                <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
+                                <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ sơ cá
+                                    nhân</a>
+                                @yield('dropdown-student')
+                                @endcan
+
                                 <a class="dropdown-item" href="{{ route('register') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     Đăng xuất
