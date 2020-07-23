@@ -45,7 +45,7 @@ class WorkHistoryController extends Controller
         $viewData = [
             'score' => $apiResult->score
         ];
-        return view('student.test.result', $viewData);
+        return view('student.result.detail', $viewData);
     }
 
     public function getResultByTestIdAndUserId($userId, $testId)
@@ -56,7 +56,7 @@ class WorkHistoryController extends Controller
             'user' => $apiResult->user,
             'workHistory' => $apiResult->workHistory,
         ];
-        return view('student.test.result', $viewData);
+        return view('student.result.detail', $viewData);
     }
 
 
@@ -139,4 +139,17 @@ class WorkHistoryController extends Controller
         ];
         return view('teacher.result.detail', $viewData);
     }
+
+    public function getStudentResultByUserId($userId)
+    {
+
+        $apiResult = $this->getWorkHistoryBus()->getAllByUserId($userId);
+
+        $viewData = [
+            'workHistories' => $apiResult->workHistories,
+            'user' => $apiResult->user
+        ];
+        return view('student.result.list', $viewData);
+    }
+
 }

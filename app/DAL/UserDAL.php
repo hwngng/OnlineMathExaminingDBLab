@@ -14,20 +14,22 @@ class UserDAL extends BaseDAL
     {
         $apiResult = new ApiResult();
 
-        $apiResult->users = User::select(DB::raw(
-            'id,
-                                    username,
-                                    email,
-                                    last_name,
-                                    avatar,
-                                    first_name,
-                                    birthdate,
-                                    telephone,
-                                    address,
-                                    role_ids as role_id,
-                                    grade_id,
-                                    school_id'
-        ))
+        $apiResult->users = User::select(
+            DB::raw(
+                'id,
+                username,
+                email,
+                last_name,
+                avatar,
+                first_name,
+                birthdate,
+                telephone,
+                address,
+                role_ids as role_id,
+                grade_id,
+                school_id'
+            )
+        )
             ->orderBy('role_id')
             ->orderBy('username')
             ->get();
@@ -39,10 +41,20 @@ class UserDAL extends BaseDAL
     {
         $ret = new ApiResult();
         $user = User::select(
-            'id',
-            'username',
-            'first_name',
-            'last_name'
+            DB::raw(
+                'id,
+                username,
+                email,
+                last_name,
+                avatar,
+                first_name,
+                birthdate,
+                telephone,
+                address,
+                role_ids as role_id,
+                grade_id,
+                school_id'
+            )
         )->where('id', $id)->first();
         $ret->user = $user;
         return $ret;

@@ -2,7 +2,7 @@
 
 @section('header')
 <link rel="stylesheet" href="{{ asset('css/user.css') }}">
-<link rel="stylesheet" href="{{ asset('css/user-create.css') }}">
+<link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
 
 @endsection
 
@@ -266,7 +266,8 @@
 
 
 </script>
-
+<script src="{{ asset('js/avatar-upload.js') }}"></script>
 <script src="{{ asset('js/user-create-form.js') }}"></script>
+
 
 @endsection

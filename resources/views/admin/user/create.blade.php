@@ -203,7 +203,7 @@
             data: form_data,
             success: function (response) {
                 if (response['return_code'] == '0') {
-                    if (!confirm("Thêm tài khoản thành công!\nBạn có muốn tiếp tục tạo câu hỏi?")) {
+                    if (!confirm("Thêm tài khoản thành công!")) {
                         close();
                     } else {
                         window.location.reload();

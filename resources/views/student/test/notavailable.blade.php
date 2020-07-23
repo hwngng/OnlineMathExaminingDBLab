@@ -14,7 +14,7 @@
             Bài thi đã kết thúc
         </div>
         <div class="card-body">
-            <a href="{{ route('student.test.result',[Auth::id(),$test_id])}}" class="card-link">Xem kết quả</a>
+            <a href="{{ route('student.result',[Auth::id(),$test_id])}}" class="card-link">Xem kết quả</a>
         </div>
 
     </div>

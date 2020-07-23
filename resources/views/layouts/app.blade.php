@@ -92,6 +92,7 @@
                                 @can('be-student')
 
                                 <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
+                                <a class="dropdown-item" href="{{ route('student.result.list',Auth::user()->id) }}">Bảng điểm</a>
                                 <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ sơ cá
                                     nhân</a>
                                 @yield('dropdown-student')

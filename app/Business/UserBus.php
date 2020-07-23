@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Business;
 
 use App\DAL\UserDAL;
@@ -8,56 +9,59 @@ use App\Business\SchoolBus;
 
 class UserBus extends BaseBus
 {
-	private $userDAL;
+    private $userDAL;
 
-	public function __construct()
-	{
-		$this->userDAL = new UserDAL();
-	}
+    public function __construct()
+    {
+        $this->userDAL = new UserDAL();
+        $this->gradeBus = new GradeBus();
+        $this->schoolBus = new SchoolBus();
+        $this->roleBus = new RoleBus();
+    }
 
-	public function getUserDAL ()
-	{
-		return $this->userDAL;
-	}
+    public function getUserDAL()
+    {
+        return $this->userDAL;
+    }
 
 
-	public function getAllForAdmin ()
-	{
+    public function getAllForAdmin()
+    {
         $apiResult = $this->getUserDAL()->getAllForAdmin();
-        $gradeBus = new GradeBus();
-        $schoolBus = new SchoolBus();
-        $roleBus = new RoleBus();
-        $apiResult->grades = $gradeBus->getAllId()->grades;
-        $apiResult->schools = $schoolBus->getAll()->schools;
-        $apiResult->roles = $roleBus->getAll()->roles;
+        $apiResult->grades = $this->gradeBus->getAllId()->grades;
+        $apiResult->schools = $this->schoolBus->getAll()->schools;
+        $apiResult->roles = $this->roleBus->getAll()->roles;
 
         return $apiResult;
     }
 
 
 
-    public function getById ($id)
-	{
-		$apiResult = $this->getUserDAL()->getById($id);
+    public function getById($id)
+    {
+        $apiResult = $this->getUserDAL()->getById($id);
 
-		return $apiResult;
-	}
+        $apiResult->grades = $this->gradeBus->getAllId()->grades;
+        $apiResult->schools = $this->schoolBus->getAll()->schools;
 
-	public function insert($user)
-	{
-		$apiResult = $this->getUserDAL()->insert($user);
-		return $apiResult;
-	}
+        return $apiResult;
+    }
 
-	public function update ($user)
-	{
-		$apiResult = $this->getUserDAL()->update($user);
+    public function insert($user)
+    {
+        $apiResult = $this->getUserDAL()->insert($user);
+        return $apiResult;
+    }
 
-		return $apiResult;
-	}
+    public function update($user)
+    {
+        $apiResult = $this->getUserDAL()->update($user);
 
-	public function destroy ($userId)
-	{
-		return $this->getUserDAL()->destroy($userId);
-	}
+        return $apiResult;
+    }
+
+    public function destroy($userId)
+    {
+        return $this->getUserDAL()->destroy($userId);
+    }
 }

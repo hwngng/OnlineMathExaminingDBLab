@@ -183,7 +183,7 @@
             data: data,
             success: function () {
                 notify('Nộp bài thành công', 'success');
-                window.location.replace('{{ route('student.test.result',[Auth::id(),$test->id])}}');
+                window.location.replace('{{ route('student.result',[Auth::id(),$test->id])}}');
             }
         });
     }

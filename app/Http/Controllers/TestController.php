@@ -43,7 +43,7 @@ class TestController extends Controller
     {
         $apiResult = $this->getTestBus()->getAll();
 
-        foreach ($$apiResult->tests as $test) {
+        foreach ($apiResult->tests as $test) {
             $test->created_at = Carbon::parse($test->created_at)->diffForHumans();
         }
 

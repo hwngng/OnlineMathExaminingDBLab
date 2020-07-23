@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use DebugBar\DebugBar;
 use App\Business\TestBus;
+use App\Business\UserBus;
 use App\Business\GradeBus;
 use Illuminate\Http\Request;
 use App\Business\QuestionBus;
@@ -17,6 +18,8 @@ class StudentController extends Controller
     private $testBus;
     private $questionBus;
     private $gradeBus;
+    private $userBus;
+
     private function getTestBus()
     {
         if ($this->testBus == null) {
@@ -24,6 +27,14 @@ class StudentController extends Controller
         }
         return $this->testBus;
     }
+    private function getUserBus()
+    {
+        if ($this->userBus == null) {
+            $this->userBus = new UserBus();
+        }
+        return $this->userBus;
+    }
+
     private function getQuestionBus()
     {
         if ($this->questionBus == null) {
@@ -60,8 +71,14 @@ class StudentController extends Controller
 
 
 
-    public function about()
+    public function about($userId)
     {
-        return view('student.test.index');
+        $apiResult = $this->getUserBus()->getById($userId);
+        $viewData = [
+            'user' => $apiResult->user,
+            'grades' => $apiResult->grades,
+            'schools' => $apiResult->schools,
+        ];
+        return view('student.about',$viewData);
     }
 }

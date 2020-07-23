@@ -52,11 +52,11 @@ class WorkHistoryBus extends BaseBus
     }
 
 
-    public function startHistory($testId,$userId,$startTime) {
+    public function startHistory($testId, $userId, $startTime)
+    {
         $apiResult = new ApiResult();
-        $apiResult =  $this->getWorkHistoryDAL()->initialHistory($testId, $userId,$startTime);
+        $apiResult =  $this->getWorkHistoryDAL()->initialHistory($testId, $userId, $startTime);
         return $apiResult;
-
     }
 
     public function getAll()
@@ -82,12 +82,39 @@ class WorkHistoryBus extends BaseBus
         $apiResult->no_of_questions = $testBus->getInfoOnly(+$testId)->test->no_of_questions;
         $apiResult->test_name = $testBus->getInfoOnly(+$testId)->test->name;
 
+        foreach ($apiResult->workHistories as $history) {
+            $history->score = number_format((float)(($history->no_of_correct / $apiResult->no_of_questions) * 10), 2, '.', '');
+        }
+
         foreach ($apiResult->workHistories as $workHistory) {
             $workHistory->user = $userBus->getById(+$workHistory->user_id)->user;
         }
 
         return $apiResult;
     }
+
+
+    public function getAllByUserId($userId)
+    {
+        $apiResult = $this->getWorkHistoryDAL()->getByUserId($userId);
+        $testBus = new TestBus();
+        $userBus = new UserBus();
+        $apiResult->user = $userBus->getById($userId)->user;
+
+        foreach ($apiResult->workHistories as $workHistory) {
+            $testId = $workHistory->test_id;
+            $workHistory->test = $testBus->getInfoOnly(+$workHistory->test_id)->test;
+
+
+            $workHistory->no_of_questions =$workHistory->test->no_of_questions;
+
+            $workHistory->score = number_format((float)(($workHistory->no_of_correct / $workHistory->no_of_questions) * 10), 2, '.', '');
+        }
+
+        return $apiResult;
+    }
+
+
 
     public function getWorkHistory($id)
     {

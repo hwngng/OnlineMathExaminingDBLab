@@ -85,11 +85,33 @@ class WorkHistoryDAL extends BaseDAL
             'ended_at',
             'submitted_at'
         )->where('test_id', '=', $testId)
+        ->orderBy('no_of_correct','desc')
             ->get();
         $ret->workHistories = $workHistories;
 
         return $ret;
     }
+
+    public function getByUserId($userId)
+    {
+        $ret = new ApiResult();
+        $workHistories = WorkHistory::select(
+            'id',
+            'user_id',
+            'test_id',
+            'no_of_correct',
+            'started_at',
+            'ended_at',
+            'submitted_at'
+        )->where('user_id', '=', $userId)
+        ->orderBy('no_of_correct','desc')
+            ->get();
+        $ret->workHistories = $workHistories;
+
+        return $ret;
+    }
+
+
 
     public function initialHistory($testId, $userId, $startTime)
     {
