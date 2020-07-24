@@ -14,6 +14,12 @@
 <script type="text/javascript" src="{{ asset('js/mathjax/tex-chtml.js') }}"></script>
 {{-- <script type="text/javascript" async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
+
+<style>
+    .question strong {
+        font-weight: normal;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -61,8 +67,10 @@
                     @endphp
                     @foreach($test->questions as $q)
                     <div id="quest-{{ $i }}" class="" style="max-width: 45em">
-                        <strong>Câu {{ $i }}</strong>
-                        {!! htmlspecialchars_decode($q->content) !!}
+                        <strong>Câu {{ $i }}:</strong>
+                        <div class="question">
+                            {!! htmlspecialchars_decode($q->content) !!}
+                        </div>
                     </div>
 
                     @php
@@ -103,7 +111,7 @@
 <script src="{{ asset('js/doing-test.js') }}"></script>
 <script>
     @if($test->remain == 0 )
-    window.location.assign('{{ route('student.test.result', Auth:: user() -> id) }}');
+    window.location.assign('{{ route('student.result.detail', Auth:: user() -> id) }}');
     @endif
 
     const notify = (msg, type) => {
@@ -183,7 +191,7 @@
             data: data,
             success: function () {
                 notify('Nộp bài thành công', 'success');
-                window.location.replace('{{ route('student.result',[Auth::id(),$test->id])}}');
+                window.location.replace('{{ route('student.result.detail',[Auth::id(),$test->id])}}');
             }
         });
     }

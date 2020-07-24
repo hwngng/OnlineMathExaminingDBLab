@@ -15,10 +15,10 @@
 
 <style>
     div.scrollable {
-			max-height: 10em;
-			margin: 0;
-			padding: 0;
-			overflow: auto;
+        max-height: 10em;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
 	}
     .order-header {
         width: 3%;
@@ -33,8 +33,8 @@
         width: 10%;
     }
     strong {
-	font-weight: normal;
-}
+        font-weight: normal;
+    }
 
 </style>
 @endsection

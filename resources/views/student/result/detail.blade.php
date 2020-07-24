@@ -27,7 +27,7 @@
                 Số câu đúng:
                 <code class="h2 mx-3">
                     <strong>
-                        {{ $workHistory->no_of_correct }}
+                        {{ $workHistory->no_of_correct ?? 0 }}
                     </strong>
                     /
                     <strong>
