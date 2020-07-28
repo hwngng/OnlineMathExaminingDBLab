@@ -9,7 +9,6 @@
 @section('header')
 
 <style>
-
     col:last-child {
         background: rgb(247, 194, 194)
     }
@@ -24,14 +23,19 @@
 @section('content')
 <div class="container">
     <h1 class="text-center my-3"> Kết quả {{ $test_name }}</h1>
+    <h2> Tổng số câu:
+        <strong>
+            {{ $no_of_questions }}
+        </strong>
+    </h2>
     @isset($workHistories)
     <table class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>Tên</th>
                 <th>Họ</th>
                 <th>Số câu đúng</th>
-                <th>Tổng số câu</th>
                 <th>Score</th>
             </tr>
         </thead>
@@ -43,10 +47,13 @@
             <col>
             @foreach ($workHistories as $workHistory)
             <tr class="" id="user-{{ $workHistory->user->id }}">
+                <td>
+                    <img src="{{ $workHistory->user->avatar }}" class="small-avatar"
+                        alt="{{ $workHistory->user->username }}">
+                </td>
                 <td>{{ $workHistory->user->first_name }}</td>
                 <td>{{ $workHistory->user->last_name }}</td>
                 <td>{{ $workHistory->no_of_correct }}</td>
-                <td>{{ $no_of_questions }}</td>
                 <td>{{ $workHistory->score }}</td>
             </tr>
             @endforeach

@@ -86,7 +86,7 @@
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @isset(Auth::user()->avatar)
-                                <image class="small-avatar" src="{{ Auth::user()->avatar }}">
+                                <image class="small-avatar" src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->username }}">
                                 </image>
                                 @endisset
                                 @empty(Auth::user()->avatar)
@@ -96,8 +96,9 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <h5 class="dropdown-header">{{ Auth::user()->first_name }}</h5>
+                                <div class="dropdown-divider"></div>
                                 @can('be-student')
-
                                 <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
                                 <a class="dropdown-item" href="{{ route('student.result.list',Auth::user()->id) }}">Bảng
                                     điểm</a>

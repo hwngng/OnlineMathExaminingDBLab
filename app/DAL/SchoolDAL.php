@@ -17,4 +17,23 @@ class SchoolDAL extends BaseDAL
         $apiResult->schools = School::select('id', 'name', 'address')->get();
         return $apiResult;
     }
+
+    public function insert($schoolName) {
+
+        $ret = new ApiResult();
+
+        $schoolORM = new School();
+        $schoolORM->name = $schoolName;
+
+        $result = $schoolORM->save();
+
+        if ($result) {
+            $ret->fill('0', 'Success');
+            $ret->schoolId = $schoolORM->id;
+        } else
+            $ret->fill('1', 'Cannot insert, database error.');
+        return $ret;
+
+    }
+
 }

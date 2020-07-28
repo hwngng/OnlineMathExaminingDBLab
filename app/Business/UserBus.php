@@ -80,6 +80,11 @@ class UserBus extends BaseBus
 
     public function update($user)
     {
+        if (!isset($user->school_id)) {
+            $response = $this->schoolBus->insert($user->school_name);
+            $user['school_id'] = $response->schoolId;
+        }
+
         $apiResult = $this->getUserDAL()->update($user);
 
         return $apiResult;

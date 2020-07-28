@@ -18,7 +18,6 @@ class ThirdPartyLoginController extends LoginController
 
 
     private $userBus;
-
     private function getUserBus()
     {
         if ($this->userBus == null) {
@@ -52,23 +51,16 @@ class ThirdPartyLoginController extends LoginController
         $user = $this->getUserBus()->getByProviderId($providerUserInfo['id'])->user;
 
         if(is_null($user)){
-            $response = $this->createNewUser($providerUserInfo->user,$provider);
+            $response = $this->createNewUser($providerUserInfo,$provider);
             $user = $this->getUserBus()->getById($response->userId)->user;
+            Auth::login($user);
+            return redirect()->route('student.about',$user->id);
         }
+
 
         Auth::login($user);
 
-        // OAuth Two Providers
-        $token = $providerUserInfo->token;
-        $refreshToken = $providerUserInfo->refreshToken; // not always provided
-        $expiresIn = $providerUserInfo->expiresIn;
-
-        // OAuth One Providers
-        // $token = $providerUserInfo->token;
-        // $tokenSecret = $providerUserInfo->tokenSecret;
-
-
-        return redirect()->to($this->redirectTo());
+        return redirect()->to($this->redirectTo);
     }
 
 

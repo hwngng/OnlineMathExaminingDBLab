@@ -103,6 +103,14 @@ class UserDAL extends BaseDAL
         $userORM = new User();
 
         if ($provider != 'none') {
+            if ($provider == 'facebook') {
+                $user = $user; //object provided by Socialite
+                $userORM->avatar = $user->avatar;
+            }
+
+            if ($provider == 'google') {
+                $user = $user->user; //array from 3rd API
+            }
             $userORM->username = $user['email'] ? $user['email'] : $user['id'];
             $userORM->provider_user_id = $user['id'];
             $userORM->role_ids = '3';

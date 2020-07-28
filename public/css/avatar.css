@@ -24,7 +24,7 @@
     transition: all .3s ease;
 }
 
-.avatar-wrapper .profile-pic:after {
+/* .avatar-wrapper .profile-pic:after {
     font-family: FontAwesome;
     content: "\f007";
     top: 0;
@@ -36,7 +36,7 @@
     background: #ecf0f1;
     color: #34495e;
     text-align: center;
-}
+} */
 
 .avatar-wrapper .upload-button {
     position: absolute;

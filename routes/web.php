@@ -88,6 +88,8 @@ Route::group(['middleware' => ['auth']], function () {
         ->group(function () {
             Route::name('index')->get('/', 'StudentController@index');
             Route::name('about')->get('/about/{id}', 'StudentController@about');
+            Route::name('update')->post('/update', 'UserController@update');
+
             Route::name('test.')->prefix('test')->group(function () {
                 Route::name('list')->get('/list', 'StudentController@getAllAvailableTests');
                 Route::name('start')->get('/{id}', 'WorkHistoryController@startTest')->middleware('authorize:student');

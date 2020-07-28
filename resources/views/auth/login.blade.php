@@ -114,11 +114,8 @@
                 <a href="{{ route('login.3rd','facebook') }}" class="network">
                     <i class="fab fa-facebook-f" style="color: #3b5998;"></i>
                 </a>
-                <a href="{{ route('login.3rd','twitter') }}" class="network">
-                    <i class="fab fa-twitter" style="color: #00acee;"></i>
-                </a>
                 <a href="{{ route('login.3rd','google') }}" class="network">
-                    <i class="far fa-envelope" style="color: #e72626;"></i>
+                    <i class="fab fa-google" style="color: #e72626;"></i>
                 </a>
             </div>
         </div>

@@ -22,5 +22,9 @@ class SchoolBus extends BaseBus
 		return $this->schoolDAL->getAll();
 	}
 
+    public function insert($schoolName) {
 
+		return $this->schoolDAL->insert($schoolName);
+
+    }
 }
