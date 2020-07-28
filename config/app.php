@@ -171,6 +171,9 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
 
 
+        //Socialite to authenticate with OAuth providers
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -235,6 +238,7 @@ return [
         //3rd party services
         'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];

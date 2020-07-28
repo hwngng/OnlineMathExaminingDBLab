@@ -44,7 +44,10 @@
                     @isset($users)
                     @foreach ($users as $user)
                     <tr id=" user-{{ $user->id }}">
-                        <td class="pt-3-half">{{ $user->avatar }}</td>
+                        <td class="pt-3-half">
+                            <image class="small-avatar" src="{{ $user->avatar }}" >
+                            </image>
+                        </td>
                         <td id="username" class="pt-3-half">{{ $user->username }}</td>
                         <td id="email" class="pt-3-half changeable" contenteditable="true">{{ $user->email }}</td>
                         <td id="last_name" class="pt-3-half changeable" contenteditable="true">
@@ -259,6 +262,51 @@
 
 
         });
+
+
+
+
+
+        $('#newUserForm').submit(function (e) {
+        e.preventDefault();
+        let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        let form_url = $(this).attr("action");
+        let form_method = $(this).attr("method");
+
+
+        //TODO: get school_id from form
+        // let schoolId = $('#school').attr("value");
+        // console.log(schoolId);
+
+
+        $(this)['school_id'] = $('#school').val();
+        $(this)['avatar'] = $('#avatar').val();
+
+        let form_data = $(this).serializeArray();
+
+        form_data.push({
+            'name' : 'avatar',
+            'value': $('#avatar').val()
+        });
+
+        console.log($.param(form_data));
+        $.ajax({
+            type: form_method,
+            url: form_url,
+            data: form_data,
+            success: function (response) {
+                if (response['return_code'] == '0') {
+                    if (!confirm("Thêm tài khoản thành công!")) {
+                        close();
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert("Thêm tài khoản thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại tài khoản")
+                }
+            }
+        });
+    })
 
     });
 

@@ -37,6 +37,42 @@ class UserDAL extends BaseDAL
         return $apiResult;
     }
 
+
+
+    public function getByProviderId($providerId)
+    {
+        $ret = new ApiResult();
+        $user = User::select(
+            DB::raw(
+                'id,
+                username,
+                email,
+                last_name,
+                avatar,
+                first_name,
+                birthdate,
+                telephone,
+                address,
+                role_ids as role_id,
+                grade_id,
+                school_id
+                provider_user_id,
+                provider
+                ',
+
+            )
+        )->where('provider_user_id', $providerId)->first();
+        $ret->user = $user;
+        return $ret;
+    }
+
+
+
+
+
+
+
+
     public function getById($id)
     {
         $ret = new ApiResult();
@@ -60,27 +96,75 @@ class UserDAL extends BaseDAL
         return $ret;
     }
 
-    public function insert($user)
+    public function insert($user, $provider = 'none')
     {
         $ret = new ApiResult();
 
         $userORM = new User();
-        $userORM->first_name = $user->first_name;
-        $userORM->last_name = $user->last_name;
-        $userORM->username = $user->username;
 
-        $userORM->password = $user->password;
+        if ($provider != 'none') {
+            $userORM->username = $user['email'] ? $user['email'] : $user['id'];
+            $userORM->provider_user_id = $user['id'];
+            $userORM->role_ids = '3';
+        } else {
+            $userORM->username = $user['username'];
+            $userORM->password = $user['password'];
+            $userORM->role_ids = $user['role_ids'] ? $user['role_ids'] : '3';
+        }
 
-        $userORM->grade_id = $user->grade_id;
-        $userORM->school_id = $user->school_id;
-        $userORM->role_ids = $user->role_ids;
 
-        $userORM->email = $user->email;
-        $userORM->birthdate = $user->birthdate;
-        $userORM->telephone = $user->telephone;
-        $userORM->address = $user->address;
+
+        if (isset($user['first_name'])) {
+            $userORM->first_name = $user['first_name'];
+        } else if (isset($user['given_name'])) {
+            $userORM->first_name = $user['given_name'];
+        } else if (isset($user['name'])) {
+            $userORM->first_name = $user['name'];
+        }
+
+
+        if (isset($user['last_name'])) {
+            $userORM->last_name = $user['last_name'];
+        } else if (isset($user['family_name'])) {
+            $userORM->last_name = $user['family_name'];
+        }
+
+
+
+        if (isset($user['avatar'])) {
+            $userORM->avatar = $user['avatar'];
+        } else if (isset($user['picture'])) {
+            $userORM->avatar = $user['picture'];
+        }
+
+
+        if (isset($user['grade_id'])) {
+            $userORM->grade_id = $user['grade_id'];
+        }
+        if (isset($user['school_id'])) {
+            $userORM->school_id = $user['school_id'];
+        }
+        if (isset($user['birthdate'])) {
+            $userORM->birthdate = $user['birthdate'];
+        }
+        if (isset($user['telephone'])) {
+            $userORM->telephone = $user['telephone'];
+        }
+
+        if (isset($user['address'])) {
+            $userORM->address = $user['address'];
+        }
+
+        if (isset($user['email'])) {
+            $userORM->email = $user['email'];
+        }
+
+
+        $userORM->provider = $provider;
+
 
         $result = $userORM->save();
+
 
         if ($result) {
             $ret->fill('0', 'Success');

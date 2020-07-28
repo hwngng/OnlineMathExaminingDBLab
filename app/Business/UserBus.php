@@ -6,6 +6,7 @@ use App\DAL\UserDAL;
 use App\Business\BaseBus;
 use App\Business\GradeBus;
 use App\Business\SchoolBus;
+use JD\Cloudder\Facades\Cloudder;
 
 class UserBus extends BaseBus
 {
@@ -47,11 +48,35 @@ class UserBus extends BaseBus
         return $apiResult;
     }
 
+    public function getByProviderId($id)
+    {
+        $apiResult = $this->getUserDAL()->getByProviderId($id);
+
+        $apiResult->grades = $this->gradeBus->getAllId()->grades;
+        $apiResult->schools = $this->schoolBus->getAll()->schools;
+
+        return $apiResult;
+    }
+
+
     public function insert($user)
     {
+
         $apiResult = $this->getUserDAL()->insert($user);
         return $apiResult;
     }
+
+    public function insertBy3rdProvider($providerUserInfo, $provider)
+    {
+        $apiResult = $this->getUserDAL()->insert($providerUserInfo, $provider);
+        return $apiResult;
+    }
+
+
+
+
+
+
 
     public function update($user)
     {

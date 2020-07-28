@@ -8,6 +8,27 @@
 <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 
 
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '312841173201962',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v7.0'
+      });
+
+      FB.AppEvents.logPageView();
+
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
 @endsection
 
 @section('content')
@@ -90,13 +111,13 @@
         <blockquote class="my-3 blockquote">hoặc đăng nhập với</blockquote>
         <div class="col-md-8 p-mini">
             <div class="login-frame mini">
-                <a href="#" class="network">
+                <a href="{{ route('login.3rd','facebook') }}" class="network">
                     <i class="fab fa-facebook-f" style="color: #3b5998;"></i>
                 </a>
-                <a href="#" class="network">
+                <a href="{{ route('login.3rd','twitter') }}" class="network">
                     <i class="fab fa-twitter" style="color: #00acee;"></i>
                 </a>
-                <a href="#" class="network">
+                <a href="{{ route('login.3rd','google') }}" class="network">
                     <i class="far fa-envelope" style="color: #e72626;"></i>
                 </a>
             </div>

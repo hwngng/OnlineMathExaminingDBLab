@@ -85,14 +85,22 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->first_name }} <span class="caret"></span>
+                                @isset(Auth::user()->avatar)
+                                <image class="small-avatar" src="{{ Auth::user()->avatar }}">
+                                </image>
+                                @endisset
+                                @empty(Auth::user()->avatar)
+                                {{ Auth::user()->first_name }}
+                                @endempty
+                                <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @can('be-student')
 
                                 <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
-                                <a class="dropdown-item" href="{{ route('student.result.list',Auth::user()->id) }}">Bảng điểm</a>
+                                <a class="dropdown-item" href="{{ route('student.result.list',Auth::user()->id) }}">Bảng
+                                    điểm</a>
                                 <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ sơ cá
                                     nhân</a>
                                 @yield('dropdown-student')

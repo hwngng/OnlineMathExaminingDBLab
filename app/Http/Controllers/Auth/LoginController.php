@@ -48,6 +48,8 @@ class LoginController extends Controller
 
     public function redirectTo ()
     {
+
+        //return redirect()->to($this->redirectTo);
         return $this->redirectTo;
     }
 }

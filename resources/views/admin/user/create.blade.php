@@ -181,39 +181,7 @@
 
 <script>
 
-    $('#newUserForm').submit(function (e) {
-        e.preventDefault();
-        let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        let form_url = $(this).attr("action");
-        let form_method = $(this).attr("method");
 
-
-        //TODO: get school_id from form
-        // let schoolId = $('#school').attr("value");
-        // console.log(schoolId);
-
-        let form_data = $(this).serialize();
-        $(this)['school_id'] = $('#school').val();
-
-
-        console.log(form_data);
-        $.ajax({
-            type: form_method,
-            url: form_url,
-            data: form_data,
-            success: function (response) {
-                if (response['return_code'] == '0') {
-                    if (!confirm("Thêm tài khoản thành công!")) {
-                        close();
-                    } else {
-                        window.location.reload();
-                    }
-                } else {
-                    alert("Thêm tài khoản thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại tài khoản")
-                }
-            }
-        });
-    })
 </script>
 
 @endsection

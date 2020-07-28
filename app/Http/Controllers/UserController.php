@@ -43,6 +43,8 @@ class UserController extends Controller
         $request->birthdate = isset($request['birthdate']) ? $request['birthdate'] : NULL;
         $request->password = Hash::make($request['password']);
 
+        $request->avatar = isset($request['avatar']) ? $request['avatar'] : NULL;
+
         $apiResult = $this->getUserBus()->insert($request);
         return response()->json($apiResult->report());
     }

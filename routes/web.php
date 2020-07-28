@@ -19,6 +19,18 @@ Auth::routes([
     'reset' => false
 ]);
 
+
+
+
+
+
+Route::name('login.')->prefix('login')->group(function () {
+
+    Route::name('3rd')->get('/{provider}', 'Auth\ThirdPartyLoginController@redirect');
+    Route::get('/{provider}/callback', 'Auth\ThirdPartyLoginController@handleProviderCallback');
+});
+
+
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 
